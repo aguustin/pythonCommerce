@@ -1,0 +1,27 @@
+.home{
+    margin-top: 120px;
+    margin-left: 4rem;
+    margin-right: 4rem;
+}
+
+.principal-img{
+    width: 100%;
+}
+
+.principal-img img{
+    width: 100%;
+    height: 700px;
+    object-fit: cover;
+}
+
+.secondary-img{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2rem 1rem;
+}
+
+.secondary-img img{
+    width: 400px;
+}

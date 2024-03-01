@@ -1,0 +1,63 @@
+.bagImg{
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    left: 2rem;
+}
+
+.navigation{
+    height: 80px;
+    width: 100%;
+    position: fixed;
+    top:0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0px 2px 5px 0px rgba(163,163,163,0.75);
+    -webkit-box-shadow: 0px 2px 5px 0px rgba(163,163,163,0.75);
+    -moz-box-shadow: 0px 2px 5px 0px rgba(163,163,163,0.75);
+    background-color: white;
+    z-index: 2;
+}
+
+.navigation-ul{
+    width: 300px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navHome{
+    color:black;
+}
+
+.btn{
+    border: none;
+}
+
+.bootstrapInput{
+    position: absolute;
+    width: 300px;
+    right: 10rem;
+}
+
+.cartShop{
+    position: absolute;
+    height: 70px;
+    width: 70px;
+    right: 3rem;
+    background-color: transparent;
+    border: none;
+    border-radius: 50%;
+}
+
+.cartShop:hover{
+   background-color: rgba(231, 231, 231, 0.75);
+   transition: all .5s;
+}
+
+.cartShop img{
+    width: 35px;
+    height: 35px;
+}
