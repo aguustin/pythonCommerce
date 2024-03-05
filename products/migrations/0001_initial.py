@@ -22,6 +22,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Products',
             fields=[
+                ('category', models.ForeignKey(default='category', on_delete=django.db.models.deletion.CASCADE, to='products.categories')),
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('title', models.CharField(default='x', max_length=100)),
                 ('description', models.TextField()),
@@ -29,7 +30,6 @@ class Migration(migrations.Migration):
                 ('count', models.PositiveIntegerField(default=0)),
                 ('rate', models.DecimalField(decimal_places=1, default=0.0, max_digits=2)),
                 ('image', models.ImageField(upload_to='productsImages/')),
-                ('category', models.ForeignKey(default='category', on_delete=django.db.models.deletion.CASCADE, to='products.categories')),
             ],
         ),
     ]

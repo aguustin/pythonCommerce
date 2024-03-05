@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from 'react';
 import ProductsContext from '../../context/productsContext';
 import upArrow from '../../assets/up-arrow.png';
 import downArrow from '../../assets/down-arrow.png';
+import addToCart from '../../assets/add-to-cart.png';
 
 const Details = () => {
 
@@ -27,8 +28,13 @@ const Details = () => {
     console.log("products:", products);
     console.log(details);
 
-    const puntuation = () => {
+    const puntuation = (productId, rate) => {
+console.log(productId, " ", rate);
+    }
 
+    const addProduct = (e, productId) => {
+        e.preventDefault();
+        console.log(productId, " ");
     }
 
     return (
@@ -52,15 +58,16 @@ const Details = () => {
                             {openPuntuation &&
                                 <div className="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
                                     <div className="btn-group btn-rating me-2" role="group" aria-label="First group">
-                                        <button type="button" className="btn btn-outline-warning">1</button>
-                                        <button type="button" className="btn btn-outline-warning">2</button>
-                                        <button type="button" className="btn btn-outline-warning">3</button>
-                                        <button type="button" className="btn btn-outline-warning">4</button>
-                                        <button type="button" className="btn btn-outline-warning">5</button>
+                                        <button type="button" className="btn btn-outline-warning" onClick={() => puntuation(d.id, 1)}>1</button>
+                                        <button type="button" className="btn btn-outline-warning" onClick={() => puntuation(d.id, 2)}>2</button>
+                                        <button type="button" className="btn btn-outline-warning" onClick={() => puntuation(d.id, 3)}>3</button>
+                                        <button type="button" className="btn btn-outline-warning" onClick={() => puntuation(d.id, 4)}>4</button>
+                                        <button type="button" className="btn btn-outline-warning" onClick={() => puntuation(d.id, 5)}>5</button>
                                     </div>
                                 </div>
                             }
                             </div>
+                            <button className='addCartButton text-bg-warning' onClick={(e) => addProduct(e, d.id)}><p>Add </p><img src={addToCart} alt=""></img></button>
                         </div>
                     </div>
                 </>

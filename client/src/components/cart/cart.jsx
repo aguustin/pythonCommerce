@@ -8,7 +8,7 @@ const Cart = () => {
         <>
             <div className="cart">
                 <div className='product-container'>
-                    <img className='product-img' src={bag} alt=""></img>
+                    <div className='product-img-container'><img className='product-img' src={bag} alt=""></img></div>
                     <div>
                         <img  className="trash" src={trash} alt=""></img>
                     </div>

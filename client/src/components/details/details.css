@@ -10,6 +10,7 @@
 }
 
 .details-info{
+    position: relative;
   width: 600px;
   margin-left: 5rem;
 }
@@ -97,4 +98,35 @@
 .other-products{
     margin-left: 8rem;
     margin-right: 8rem;
+}
+
+.addCartButton{
+    display: flex;
+    position: absolute;
+    right: 0;
+    bottom: 5rem;
+    width: 154px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0rem 1rem;
+    border: none;
+    font-size: 26px;
+    border-radius: 5px;
+}
+
+.addCartButton p{
+    margin-top: 10px;
+}
+
+.addCartButton img{
+    width: 54px;
+}
+
+.addCartButton:hover{
+    cursor: pointer;
+    transform: translateY(-5px);
+    box-shadow: 0px 2px 5px 0px rgba(153,153,153,0.75);
+    -webkit-box-shadow: 0px 2px 5px 0px rgba(153,153,153,0.75);
+    -moz-box-shadow: 0px 2px 5px 0px rgba(153,153,153,0.75);
+    transition: all.5s;
 }

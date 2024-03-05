@@ -2,6 +2,7 @@
     position: absolute;
     top:8.5vh;
     right: 0;
+    margin-right: 3rem;
     width: 400px;
     border-radius: 5px;
     background-color: white;
@@ -10,13 +11,21 @@
     -moz-box-shadow: -1px 1px 5px 0px rgba(97,97,97,0.75);
 }
 
+
 .product-container{
     display: flex;
+}
+
+.product-img-container{
+    display: flex;
+    align-items: center;
+    width: 150px;
 }
 
 .product-img{
     height: 64px;
     width: 64px;
+    margin: auto;
 }
 
 .trash{
@@ -26,7 +35,7 @@
 }
 
 .product-desc{
-    padding: 0rem 1rem;
+    padding: .2rem 1rem;
     margin-top: .5rem;
 }
 

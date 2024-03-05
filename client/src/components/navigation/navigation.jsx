@@ -34,8 +34,8 @@ const Navigation = () => {
                     <span className="input-group-text" id="inputGroup-sizing-default">Search</span>
                     <input type="text" className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
                 </div>
-                <button className='cartShop'><img src={cartShops} alt=""></img></button>
-                <Cart/>
+                <button className='cartShop' onClick={() => setOpenCart(!openCart)}><img src={cartShops} alt=""></img></button>
+                {openCart && <Cart/>}
             </div>
         </>
     )

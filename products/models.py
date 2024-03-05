@@ -11,7 +11,7 @@ class Categories(models.Model):
 class Products(models.Model):
     category = models.ForeignKey(Categories, on_delete=models.CASCADE, default='category')
     title = models.CharField(max_length=100, default='x')
-    description = models.TextField()
+    description = models.CharField(max_length=600, default='x')
     price = models.DecimalField(default=0.00, max_digits=10, decimal_places=2)
     count = models.PositiveIntegerField(default=0)
     rate = models.DecimalField(default=0.0, max_digits=2, decimal_places=1)

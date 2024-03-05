@@ -7,6 +7,6 @@ router = routers.DefaultRouter()
 router.register(r'products', views.ProductsView, 'products')
 
 urlpatterns = [
-    path('api/v1', include(router.urls)),
+    path('api/v1/', include(router.urls)),
     path('docs/', include_docs_urls(title="Task API"))
 ]
