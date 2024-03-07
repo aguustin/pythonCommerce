@@ -7,8 +7,9 @@ from .models import Categories, Products
 # Create your views here.
 class CategoriesView(viewsets.ModelViewSet):
         serializer_class = CategoriesSerializer
-        queryset = Categories.objects.all(),
+        queryset = Categories.objects.all().values()
         
 class ProductsView(viewsets.ModelViewSet):
         serializer_class = ProductsSerializer
-        queryset = Products.objects.all(),
+        queryset = Products.objects.all().values()
+        
