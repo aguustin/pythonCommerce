@@ -67,7 +67,11 @@ console.log(productId, " ", rate);
                                 </div>
                             }
                             </div>
-                            <button className='addCartButton text-bg-warning' onClick={(e) => addProduct(e, d.id)}><p>Add </p><img src={addToCart} alt=""></img></button>
+                            <div>
+                                <button className='addCartButton text-bg-warning' onClick></button>
+                                <button className='addCartButton text-bg-warning' onClick={(e) => addProduct(e, d.id)}><p>Add </p><img src={addToCart} alt=""></img></button>
+                                <button className='addCartButton text-bg-warning' onClick></button>
+                            </div>
                         </div>
                     </div>
                 </>
