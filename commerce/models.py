@@ -3,6 +3,22 @@ from django.forms import model_to_dict
 
 # Create your models here.
 
+class User(models.Model):
+    mail = models.EmailField(max_length=100)
+    username = models.CharField(max_length=30)
+    password = models.CharField(max_length=30)
+    #birthday = models.DateField(auto_now_add=True, verbose_name="Creation Time")
+    
+    def __str__(self):
+        return self.mail
+    
+    def toJSON(self):
+        item = model_to_dict(self)
+        return item
+    
+    class Meta:
+        db_table = 'User'
+        ordering = ['id']
 
 class Categories(models.Model):
     title = models.CharField(max_length=100)
@@ -19,6 +35,7 @@ class Categories(models.Model):
         ordering = ['id']
     
 class Products(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     category = models.ForeignKey(Categories, on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
     description = models.CharField(max_length=500)
