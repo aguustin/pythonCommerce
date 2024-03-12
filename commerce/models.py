@@ -4,6 +4,7 @@ from django.forms import model_to_dict
 # Create your models here.
 
 class User(models.Model):
+    userType = models.IntegerField()
     mail = models.EmailField(max_length=100)
     username = models.CharField(max_length=30)
     password = models.CharField(max_length=30)

@@ -3,6 +3,7 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from commerce.models import Products, User
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 
 class GetAllProducts(ListView):
@@ -27,11 +28,16 @@ class AccountInfo(ListView, CreateView):
         data[request.POST['crearteAccount']]
         return JsonResponse(data, safe=False)
 
+
 class CreateProduct(CreateView):
-    model = Products
-    def post(self, request, *args, **kwargs):
-        data = []
-        res = request.POST['crearteProduct']
+    print('asdasdsadsadsad')
+   # model = Products
+    #def post(self, request, *args, **kwargs):
+       # data = []
+       # res = request.POST['crearteProduct']
+       # Products.objects.create(res)
+       # return JsonResponse(data, safe=False)
+
 
 class UpdateCartInfo(UpdateView):
     model = Products

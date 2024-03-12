@@ -53,6 +53,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+
 ROOT_URLCONF = 'storeapi.urls'
 
 TEMPLATES = [
@@ -121,9 +122,14 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:5173'
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'
+}
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
