@@ -25,24 +25,22 @@ class AccountInfo(ListView, CreateView):
             return data
     def post(self, request, *args, **kwargs):
         data = []
-        data[request.POST['crearteAccount']]
+        data.append(request.POST['createAccount'])
         return JsonResponse(data, safe=False)
 
-
 class CreateProduct(CreateView):
-    print('asdasdsadsadsad')
-   # model = Products
-    #def post(self, request, *args, **kwargs):
-       # data = []
-       # res = request.POST['crearteProduct']
-       # Products.objects.create(res)
-       # return JsonResponse(data, safe=False)
+    model = Products
+    def post(self, request, *args, **kwargs):
+        res = request.POST.get('createProduct', False)
+        Products.objects.create(res)
+        return JsonResponse(res, safe=False)
 
 
 class UpdateCartInfo(UpdateView):
     model = Products
     def put(self, request, *args, **kwargs):
-        data = []
-        res = request.PUT['buyInfo']
+        data = [request.PUT['buyInfo']]
+        Products.objects.update(data)
+        return JsonResponse(data, safe=False)
        # if(res):
                    
