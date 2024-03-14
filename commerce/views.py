@@ -1,7 +1,7 @@
 from pickle import FALSE
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
-from commerce.models import Products, User
+from commerce.models import Categories, Products, User
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
@@ -30,17 +30,48 @@ class AccountInfo(ListView, CreateView):
 
 class CreateProduct(CreateView):
     model = Products
+    model = Categories
     def post(self, request, *args, **kwargs):
-        res = request.POST.get('createProduct', False)
-        Products.objects.create(res)
-        return JsonResponse(res, safe=False)
+        post_values = request.POST
+        data = {
+            
+            "user_id": 0,
+            "title": post_values.get('title'),
+            "description":post_values.get('description'),
+            "price":post_values.get('price'),
+            "rate":post_values.get('rate'),
+            "count":post_values.get('count'),
+            "image":post_values.get('image'),
+        },
+        Products.objects.create(data.user_id, data.title, data.description, data.price, data.rate, data.count, data.image)
+        category = request.POST.get('category')
+        Categories.objects.create(category)
+        #Products.objects.create(res)
+        return HttpResponse(200)
 
 
 class UpdateCartInfo(UpdateView):
     model = Products
     def put(self, request, *args, **kwargs):
-        data = [request.PUT['buyInfo']]
+        put_values = request.PUT
+        data={
+            "id":put_values.get('id'),
+            "user_id":put_values.get('user_id'),
+            "title": put_values.get('title'),
+            "description":put_values.get('description'),
+            "price":put_values.get('price'),
+            "count":put_values.get('count'),
+            "rate":put_values.get('rate'),
+            "count":put_values.get('count'),
+            "image":put_values.get('image'),
+        }
         Products.objects.update(data)
         return JsonResponse(data, safe=False)
        # if(res):
-                   
+
+class GetUserCart(ListView):
+    model = Products
+    def get(self, userId, *args, **kwargs):
+        data = Products.objects.get(user_id=userId)
+        return HttpResponse(data)   
+        #return HttpResponse(200)                
