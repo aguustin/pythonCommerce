@@ -33,22 +33,22 @@ class CreateProduct(CreateView):
     model = Categories
     def post(self, request, *args, **kwargs):
         post_values = request.POST
-        data = {
-            
-            "user_id": 0,
-            "title": post_values.get('title'),
-            "description":post_values.get('description'),
-            "price":post_values.get('price'),
-            "rate":post_values.get('rate'),
-            "count":post_values.get('count'),
-            "image":post_values.get('image'),
-        },
-        Products.objects.create(data.user_id, data.title, data.description, data.price, data.rate, data.count, data.image)
         category = request.POST.get('category')
-        Categories.objects.create(category)
-        #Products.objects.create(res)
-        return HttpResponse(200)
+        Categories.objects.create(title=category)
+        data = {
+            "user_id": 0,
+            "category_id": 2,
+            "title": post_values.get('title'),
+            "description": post_values.get('description'),
+            "price": post_values.get('price'),
+            "rate": post_values.get('rate'),
+            "count": post_values.get('count'),
+            "image": post_values.get('image'),
+            #"category": post_values.get('category')
+        }
 
+        Products.objects.create(**data)
+        return HttpResponse(200)
 
 class UpdateCartInfo(UpdateView):
     model = Products
