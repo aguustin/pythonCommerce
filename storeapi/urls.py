@@ -27,9 +27,9 @@ router = routers.DefaultRouter()
 urlpatterns = [
     path('docs/', include_docs_urls(title='store API')),
     path('admin/', admin.site.urls),
-    path('account/', views.AccountInfo.as_view()),
+    path('account/', csrf_exempt(views.AccountInfo.as_view()), name="account"),
     path('getAllProducts/', views.GetAllProducts.as_view()),
     path('CreateProduct/', csrf_exempt(views.CreateProduct.as_view()), name="createProduct"),
-    path('updateCartInfo/', views.UpdateCartInfo.as_view()),
+    path('updateCartInfo/<int:userId>/<int:categoryId>/<str:title>/<str:description>/<int:price>/<int:rate>/<str:image>/', csrf_exempt(views.UpdateCartInfo.as_view()), name="updateCartInfo"),
     path('GetUserCart/<int:userId>/', views.GetUserCart.as_view(), name="GetUserCart")
 ]
