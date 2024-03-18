@@ -1,9 +1,10 @@
+import json
 from pickle import FALSE
-from django.http import HttpResponse, JsonResponse, QueryDict
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from commerce.models import Categories, Products, User
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-from django.views.decorators.csrf import csrf_exempt
+from django.core.serializers import serialize
 # Create your views here.
 
 class GetAllProducts(ListView):
@@ -11,18 +12,17 @@ class GetAllProducts(ListView):
     def get(self, request, *args, **kwargs):
         data = Products.objects.all().values()
         return JsonResponse(list(data), safe=False)
+    
 
-class AccountInfo(ListView, CreateView):
-    model = User
-    def get(self, request, *args, **kwargs):
-        data = []
-        if(request.GET['userId']):
-            res = request.GET['userId']
-            data[Products.objects.all(res)]
-            return JsonResponse(data, safe=False)
+class GetUserInfo(ListView):
+    model = Products
+    def get(self, request, userId, **kwargs):
+        
+        if request.method == 'GET':
+            data = Products.objects.filter(user_id=userId).values()
+            return JsonResponse(list(data), safe=False)
         else:
-            data['error'] = 'Ha ocurrido un error'
-            return data
+            return 'Ha ocurrido un error'
     def post(self, request, *args, **kwargs):
         data = []
 
@@ -38,7 +38,8 @@ class AccountInfo(ListView, CreateView):
             return JsonResponse(data, safe=False)
         else:
             print("Las contraseñas no coinciden")
-            return HttpResponse(204)
+            return HttpResponse(204)              
+
 
 class CreateProduct(CreateView):
     model = Products
@@ -46,7 +47,6 @@ class CreateProduct(CreateView):
     def post(self, request, *args, **kwargs):
         post_values = request.POST
         category = request.POST.get('category')
-        print("asdasdasdasdasdasd", category)
         Categories.objects.create(title=category)
         
         data = {
@@ -62,31 +62,30 @@ class CreateProduct(CreateView):
         Products.objects.create(**data)
         return HttpResponse(200)
 
-class UpdateCartInfo(UpdateView):
-    model = Products
-    def put(self, request, *args, **kwargs):
 
-        if request.method == 'PUT':
-            put_values = QueryDict(request.body)  #no estoy pudiendo traer los datos, no viene nada (creo que es eso)
-            print(put_values)
+class UpdateCartInfo(CreateView):
+    model = Products
+    def post(self, request, *args, **kwargs):
+        post_values = request.POST
+        if request.method == 'POST':
             data={
-                "user_id":put_values.get('userId'),
-                "category_id":put_values.get('categoryId'),
-                "title": put_values.get('title'),
-                "description":put_values.get('description'),
-                "price":put_values.get('price'),
-                "rate":put_values.get('rate'),
-                "image":put_values.get('image'),
+                "user_id":post_values.get('userId'),
+                "category_id":post_values.get('categoryId'),
+                "title": post_values.get('title'),
+                "description":post_values.get('description'),
+                "price":post_values.get('price'),
+                "rate":post_values.get('rate'),
+                "count":post_values.get('count'),
+                "image":post_values.get('image'),
             }
-            Products.objects.update(**data)
+            Products.objects.create(**data)
             return JsonResponse(data, safe=False)
         else:
             return HttpResponse(204)
-    
-
-class GetUserCart(ListView):
+        
+class DeleteProduct(DeleteView):
     model = Products
-    def get(self, userId, *args, **kwargs):
-        data = Products.objects.get(user_id=userId)
-        return HttpResponse(data)   
-        #return HttpResponse(200)                
+    def delete(self, request, *args, **kwargs):
+        productId = request.POST.get('productId')
+        Products.objects.filter(id=productId).delete()
+        return HttpResponse(200)

@@ -41,7 +41,7 @@ class Products(models.Model):
     description = models.CharField(max_length=500)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     rate = models.DecimalField(max_digits=3, decimal_places=1)
-    count = models.IntegerField()
+    count = models.IntegerField(blank=True, null=True)
     image = models.ImageField(upload_to='productsImages/', max_length=200)
 
     def __str__(self):
