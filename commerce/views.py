@@ -14,12 +14,19 @@ class GetAllProducts(ListView):
         return JsonResponse(list(data), safe=False)
     
 
+class GetAllUsers(ListView):
+    model = User
+    def get(self, request, *args, **kwargs):
+        data = User.objects.all().values()
+        return JsonResponse(list(data), safe=False)
+    
+
 class GetUserInfo(ListView):
-    model = Products
-    def get(self, request, userId, **kwargs):
+    model = User
+    def get(self, request, userMail, **kwargs):
         
         if request.method == 'GET':
-            data = Products.objects.filter(user_id=userId).values()
+            data = User.objects.filter(mail=userMail).values()
             return JsonResponse(list(data), safe=False)
         else:
             return 'Ha ocurrido un error'
@@ -42,6 +49,7 @@ class GetUserInfo(ListView):
 
 
 class CreateProduct(CreateView):
+    model = User
     model = Products
     model = Categories
     def post(self, request, *args, **kwargs):
@@ -49,9 +57,17 @@ class CreateProduct(CreateView):
         category = request.POST.get('category')
         Categories.objects.create(title=category)
         
+        #data = {
+           # "product_id": post_values.get('user_id'),
+           # "category_id": post_values.get('category_id'),
+           # "userType": post_values.get('user_type'),
+           # "mail": post_values.get('mail'),
+           # "username": post_values.get('username'),
+       # }
+       # User.objects.create(**data)
+
         data = {
-            "user_id": post_values.get('user_id'),
-            "category_id": post_values.get('category_id'),
+            "category_id": post_values.get('categoryId'),
             "title": post_values.get('title'),
             "description": post_values.get('description'),
             "price": post_values.get('price'),
@@ -60,32 +76,38 @@ class CreateProduct(CreateView):
             "image": post_values.get('image'),
         }
         Products.objects.create(**data)
+
         return HttpResponse(200)
 
 
 class UpdateCartInfo(CreateView):
-    model = Products
+    model = User
     def post(self, request, *args, **kwargs):
         post_values = request.POST
         if request.method == 'POST':
             data={
-                "user_id":post_values.get('userId'),
-                "category_id":post_values.get('categoryId'),
-                "title": post_values.get('title'),
-                "description":post_values.get('description'),
-                "price":post_values.get('price'),
-                "rate":post_values.get('rate'),
-                "count":post_values.get('count'),
-                "image":post_values.get('image'),
+                "product_id":post_values.get('productId'),
+                "userType": post_values.get(''),
+                "mail": post_values.get(''),
+                "username": post_values.get('')
+          
             }
-            Products.objects.create(**data)
+            User.objects.create(**data)
             return JsonResponse(data, safe=False)
         else:
             return HttpResponse(204)
         
+        #"id": 3,
+        #"category_id": 4,
+       # "title": "pruebaC",
+       # "description": "desc prueba C",
+       # "price": "22.00",
+       # "rate": "5.0",
+       # "count": 20,
+       # "image": "productsImages/prueba_9odlpXk.jpg"
 class DeleteProduct(DeleteView):
-    model = Products
+    model = User
     def delete(self, request, *args, **kwargs):
         productId = request.POST.get('productId')
-        Products.objects.filter(id=productId).delete()
+        User.objects.filter(product_id=productId).delete()
         return HttpResponse(200)

@@ -6,7 +6,6 @@ from commerce.models import Categories, Products, User
 class ProductsAdmin(admin.ModelAdmin):
     list_display = [
         'id',
-        'user',
         'category', 
         'title', 
         'description', 
@@ -21,6 +20,7 @@ admin.site.register(Products, ProductsAdmin)
 class UserAdmin(admin.ModelAdmin):
     list_display = [
         'id',
+        'product',
         'mail',
         'username',
         'password'

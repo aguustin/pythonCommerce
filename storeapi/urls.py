@@ -28,6 +28,8 @@ urlpatterns = [
     path('docs/', include_docs_urls(title='store API')),
     path('admin/', admin.site.urls),
     path('getAllProducts/', views.GetAllProducts.as_view()),
+    path('getAllUsers/', views.GetAllUsers.as_view()),
+    path('GetUserInfo/<str:userMail>', views.GetUserInfo.as_view()),
     path('CreateProduct/', csrf_exempt(views.CreateProduct.as_view()), name="createProduct"),
     path('updateCartInfo/', csrf_exempt(views.UpdateCartInfo.as_view()), name="updateCartInfo"),
     path('GetUserCart/<int:userId>/', views.GetUserInfo.as_view(), name="GetUserCart")
