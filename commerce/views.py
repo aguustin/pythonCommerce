@@ -2,10 +2,54 @@ import json
 from pickle import FALSE
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
-from commerce.models import Categories, Products, User
+from commerce.models import Categories, Location, PostalCode, Products, User
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.core.serializers import serialize
 # Create your views here.
+
+class CreateUser(CreateView):
+    model = User
+    model = Location
+    model = PostalCode
+
+    def post(self, request, *args, **kwargs):
+        userModel = User()
+        userType = request.POST.get('userType')
+        mail = request.POST.get('mail')
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        if( not userModel.objects.filter(userModel.mail__icontains(request.POST.get('mail')))):
+
+            locationModel = Location()
+            country =  request.POST.get('country')
+            city =  request.POST.get('city')
+            address =  request.POST.get('address')
+            number =  request.POST.get('number')
+
+            postalModel = PostalCode()
+            postal_n = request.POST.get('postal_number')
+
+            if(country != '' and city != '' and address != '' and number != ''):
+                if(locationModel.objects.filter(locationModel.country__icontains(country)) and locationModel.objects.filter(locationModel.city__icontains(city)) and locationModel.objects.filter(locationModel.address__icontains(address)) and locationModel.objects.filter(locationModel.number__exact(number))):
+                    if(postalModel.objects.filter(postalModel.postal_number__exact(postal_n).exists())):
+                        locationModel.country = country
+                        locationModel.city = city
+                        locationModel.address = address
+                        locationModel.number = number
+                        locationModel.save()
+
+                        postalModel.postal_number = postal_n
+                        postalModel.save()
+
+                        userModel.location_code = locationModel[0]._id
+                        userModel.postal_code = postalModel[0]._id
+                        userModel.userType = userType
+                        userModel.mail = mail
+                        userModel.username = username
+                        userModel.password = password
+
+                        return HttpResponse(200)
 
 class GetAllProducts(ListView):
     model = Products
@@ -57,15 +101,6 @@ class CreateProduct(CreateView):
         category = request.POST.get('category')
         Categories.objects.create(title=category)
         
-        #data = {
-           # "product_id": post_values.get('user_id'),
-           # "category_id": post_values.get('category_id'),
-           # "userType": post_values.get('user_type'),
-           # "mail": post_values.get('mail'),
-           # "username": post_values.get('username'),
-       # }
-       # User.objects.create(**data)
-
         data = {
             "category_id": post_values.get('categoryId'),
             "title": post_values.get('title'),

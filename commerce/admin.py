@@ -28,7 +28,6 @@ admin.site.register(Categories, CategoriesAdmin)
 
 class LocationAdmin(admin.ModelAdmin):
     list_display = [
-        "location_id",
         "country",
         "city",
         "address",
@@ -39,14 +38,13 @@ admin.site.register(Location, LocationAdmin)
 
 class PostalCodeAdmin(admin.ModelAdmin):
     list_display = [
-        "postal_id"
+        "postal_number"
     ]
     
 admin.site.register(PostalCode, PostalCodeAdmin)
 
 class UserAdmin(admin.ModelAdmin):
     list_display = [
-        'user_id',
         'location_code',
         'postal_code',
         'userType',
@@ -59,7 +57,6 @@ admin.site.register(User, UserAdmin)
 
 class BuyAdmin(admin.ModelAdmin):
     list_display = [
-        'buy_id',
         'user_code',
         'total_price',
         'buy_date'
@@ -69,7 +66,6 @@ admin.site.register(Buy, BuyAdmin)
 
 class Buy_detailsAdmin(admin.ModelAdmin):
     list_display = [
-        'buy_details_id',
         'product_code',
         'buy_code'
     ]

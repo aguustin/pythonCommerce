@@ -39,14 +39,13 @@ class Products(models.Model):
         ordering = ['product_id']
 
 class Location(models.Model):
-    location_id = models.AutoField(primary_key=True)
     country = models.CharField(max_length=30)
     city = models.CharField(max_length=30)
     address = models.CharField(max_length=30)
     number = models.IntegerField()
 
     def __str__(self):
-        return self.location_id
+        return self.address
     
     def toJSON(self):
         item = model_to_dict(self)
@@ -54,13 +53,13 @@ class Location(models.Model):
     
     class Meta:
         db_table = 'Location'
-        ordering = ['location_id']
+        ordering = ['id']
 
 class PostalCode(models.Model):
-    postal_id = models.AutoField(primary_key=True)
+    postal_number = models.IntegerField()
 
     def __str__(self):
-        return self.postal_id
+        return self. postal_number
     
     def toJSON(self):
         item = model_to_dict(self)
@@ -68,10 +67,9 @@ class PostalCode(models.Model):
     
     class Meta:
         db_table = 'PostalCode'
-        ordering = ['postal_id']
+        ordering = ['id']
 
 class User(models.Model):
-    user_id = models.AutoField(primary_key=True)
     location_code = models.ForeignKey(Location, on_delete=models.CASCADE, default="")
     postal_code = models.ForeignKey(PostalCode, on_delete=models.CASCADE, default="")
     userType = models.IntegerField()
@@ -89,16 +87,15 @@ class User(models.Model):
     
     class Meta:
         db_table = 'User'
-        ordering = ['user_id']
+        ordering = ['id']
 
 class Buy(models.Model):
-    buy_id = models.AutoField(primary_key=True)
     user_code = models.ForeignKey(User, on_delete=models.CASCADE, default="")
     total_price = models.DecimalField(max_digits=10, decimal_places=2, default="")
     buy_date = models.DateField()
 
     def __str__(self):
-        return self.buy_id
+        return self.user_code
     
     def toJSON(self):
         item = model_to_dict(self)
@@ -106,15 +103,14 @@ class Buy(models.Model):
     
     class Meta:
         db_table = 'Buy'
-        ordering = ['buy_id']
+        ordering = ['id']
     
 class Buy_details(models.Model):
-    buy_details_id = models.AutoField(primary_key=True)
     product_code = models.ForeignKey(Products, on_delete=models.CASCADE, default="")
     buy_code = models.ForeignKey(Buy, on_delete=models.CASCADE, default="")
 
     def __str__(self):
-        return self.buy_details_id
+        return self.buy_code 
 
     def toJSON(self):
         item = model_to_dict(self)
@@ -122,4 +118,4 @@ class Buy_details(models.Model):
     
     class Meta:
         db_table = 'Buy_details'
-        ordering = ['buy_details_id']
+        ordering = ['id']
