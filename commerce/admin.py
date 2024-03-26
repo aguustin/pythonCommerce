@@ -6,8 +6,7 @@ from commerce.models import Buy, Buy_details, Categories, Location, PostalCode, 
 
 class ProductsAdmin(admin.ModelAdmin):
     list_display = [
-        'product_id',
-        'category_code', 
+        'category_code',   
         'productName', 
         'description', 
         'price',
@@ -20,7 +19,6 @@ admin.site.register(Products, ProductsAdmin)
 
 class CategoriesAdmin(admin.ModelAdmin):
     list_display = [
-        "category_id",
         "category"
     ]
 

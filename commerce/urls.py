@@ -8,6 +8,6 @@ router = routers.DefaultRouter()
 #router.register(r'updateCartInfo', views.UpdateCartInfo.as_view(), 'updateCartInfo')
 
 urlpatterns = [
-    path('docs/', include_docs_urls(title='store API')),
-    path('admin/', admin.site.urls),
+    #path('docs/', include_docs_urls(title='store API')),
+    #path('admin/', admin.site.urls),
 ]

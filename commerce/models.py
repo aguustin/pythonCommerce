@@ -1,10 +1,10 @@
 from django.db import models
 from django.forms import model_to_dict
+from storeapi import settings
 
 # Create your models here.
 
 class Categories(models.Model):
-    category_id = models.AutoField(primary_key=True)
     category = models.CharField(max_length=30)
 
     def __str__(self):
@@ -16,17 +16,17 @@ class Categories(models.Model):
     
     class Meta:
         db_table = 'Categories'
-        ordering = ['category_id'],
+        ordering = ['id']
+
 
 class Products(models.Model):
-    product_id = models.AutoField(primary_key=True)
     category_code = models.ForeignKey(Categories, on_delete=models.CASCADE, default="")
     productName = models.CharField(max_length=100)
     description = models.CharField(max_length=500)
-    price = models.DecimalField(max_digits=10, decimal_places=2, default="")
+    price = models.IntegerField()
     quantity = models.IntegerField()
-    rate = models.DecimalField(max_digits=2, decimal_places=2, default="")
-    image = models.ImageField(upload_to ='productsImages/')
+    rate = models.IntegerField()
+    image = models.ImageField(upload_to='productsImages/')
     def __str__(self):
         return self.productName
 
@@ -36,12 +36,13 @@ class Products(models.Model):
     
     class Meta:
         db_table = 'Products'
-        ordering = ['product_id']
+        ordering = ['id']
+
 
 class Location(models.Model):
     country = models.CharField(max_length=30)
     city = models.CharField(max_length=30)
-    address = models.CharField(max_length=30)
+    address = models.CharField(max_length=100)
     number = models.IntegerField()
 
     def __str__(self):
@@ -55,11 +56,12 @@ class Location(models.Model):
         db_table = 'Location'
         ordering = ['id']
 
+
 class PostalCode(models.Model):
     postal_number = models.IntegerField()
 
     def __str__(self):
-        return self. postal_number
+        return str(self.postal_number)
     
     def toJSON(self):
         item = model_to_dict(self)
@@ -68,6 +70,7 @@ class PostalCode(models.Model):
     class Meta:
         db_table = 'PostalCode'
         ordering = ['id']
+
 
 class User(models.Model):
     location_code = models.ForeignKey(Location, on_delete=models.CASCADE, default="")
@@ -91,8 +94,9 @@ class User(models.Model):
 
 class Buy(models.Model):
     user_code = models.ForeignKey(User, on_delete=models.CASCADE, default="")
+    product_code = models.ForeignKey(Products, on_delete=models.CASCADE, default="")
     total_price = models.DecimalField(max_digits=10, decimal_places=2, default="")
-    buy_date = models.DateField()
+    buy_date = models.DateField(null=True)
 
     def __str__(self):
         return self.user_code
