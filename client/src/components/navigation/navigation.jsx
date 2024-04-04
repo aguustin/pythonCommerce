@@ -1,13 +1,14 @@
 import './navigation.css';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import bag from '../../assets/bag.png';
 import cartShops from '../../assets/shopping-trolley.png';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import Cart from '../cart/cart';
+import AuthContext from '../../context/authContext';
 
 const Navigation = () => {
-
-    const [openCart, setOpenCart] = useState(false);
+    const {SHCart} = useContext(AuthContext);
+    const [openCart, setOpenCart] = useState();
 
     return(
         <>
@@ -34,8 +35,18 @@ const Navigation = () => {
                     <span className="input-group-text" id="inputGroup-sizing-default">Search</span>
                     <input type="text" className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
                 </div>
-                <button className='cartShop' onClick={() => setOpenCart(!openCart)}><img src={cartShops} alt=""></img></button>
+                {SHCart 
+                    ?
+                    <>
+                        <button className='cartShop' onClick={() => setOpenCart(!openCart)}><img src={cartShops} alt=""></img></button>
+                    </>
+                    :
+                    <div className='account'>
+                        <a href="/account/getIn">Get in</a>
+                        <a href="/account/signIn">Sign In</a> 
+                    </div>}
                 {openCart && <Cart/>}
+              
             </div>
         </>
     )

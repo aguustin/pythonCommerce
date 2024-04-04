@@ -39,7 +39,7 @@
 .bootstrapInput{
     position: absolute;
     width: 300px;
-    right: 10rem;
+    right: 12rem;
 }
 
 
@@ -61,4 +61,18 @@
 .cartShop img{
     width: 35px;
     height: 35px;
+}
+
+.account{
+    position: absolute;
+    display: flex;
+    right: 1.5rem;
+    width: 130px;
+    justify-content: space-between;
+}
+
+.account a {
+    text-decoration: none;
+    color:black;
+    font-weight: 500;
 }

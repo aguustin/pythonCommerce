@@ -7,11 +7,14 @@ import Home from './components/home/home';
 import Details from './components/details/details';
 import { ProductsContextProvider } from './context/productsContext';
 import Products from './components/products/products';
+import UserForm from './components/userForm/userForm';
+import { AuthContextProvider } from './context/authContext';
 
 function App() {
 
   return (
     <>
+    <AuthContextProvider>
     <ProductsContextProvider>
       <BrowserRouter>
         <Navigation/>
@@ -19,9 +22,11 @@ function App() {
           <Route path="/" element={<Home/>} />
           <Route path="/products/:category" element={<Products/>} />
           <Route path="/details/:id" element={<Details/>} />
+          <Route path="/account/:change" element={<UserForm/>} />
         </Routes>
       </BrowserRouter>
     </ProductsContextProvider>
+    </AuthContextProvider>
     </>
   )
 }
