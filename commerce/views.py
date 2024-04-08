@@ -12,38 +12,36 @@ class CreateUser(CreateView): #funciona
     model = User
     model = Location
     model = PostalCode
-
+   
     def post(self, request, *args, **kwargs):
-        userType = request.POST.get('userType')
-        mail = request.POST.get('mail')
-        username = request.POST.get('username')
-        password = request.POST.get('password')
+        data = json.loads(request.body)
+        #userType = data.get('userType')
+        mail = data.get('mail')
+        username = data.get('username')
+        password = data.get('password')
 
-        if( not User.objects.filter(mail__icontains=mail)):
+        if mail is not None and not User.objects.filter(mail__icontains=mail):
 
-            country =  request.POST.get('country')
-            city =  request.POST.get('city')
-            address =  request.POST.get('address')
-            number =  request.POST.get('number')
+            country =  data.get('country')
+            city =  data.get('city')
+            address =  data.get('address')
+            number =  data.get('addressNumber')
 
             PostalCodes = PostalCode()
-            postal_n = request.POST.get('postal_number')
+            postal_n = data.get('cPostal')
 
-            if(country != '' and city != '' and address != ''):
-               # if(Location.objects.filter(country__icontains=country) and Location.objects.filter(city__icontains=city) and Location.objects.filter(address__icontains=address) and Location.objects.filter(number__exact=number)):
-                   # if(PostalCode.objects.filter(postal_number__exact=postal_n.exists())):
-                        print("entro")
+            print("entro")
                 
-                        Locations = Location.objects.create(country=country, city=city, address=address, number=number)
-                        Locations.save()
+            Locations = Location.objects.create(country=country, city=city, address=address, number=number)
+            Locations.save()
 
-                        PostalCodes = PostalCode.objects.create(postal_number=postal_n)
-                        PostalCodes.save()
+            PostalCodes = PostalCode.objects.create(postal_number=postal_n)
+            PostalCodes.save()
 
-                        usersData = User.objects.create(location_code=Locations, postal_code=PostalCodes, userType=userType, mail=mail, username=username, password=password)
-                        usersData.save()
+            usersData = User.objects.create(location_code=Locations, postal_code=PostalCodes, userType=2, mail=mail, username=username, password=password)
+            usersData.save()
 
-                        return HttpResponse(200)
+            return HttpResponse(200)
             
 
 class GetAllProducts(ListView): #funciona
@@ -62,30 +60,18 @@ class GetAllUsers(ListView): #funciona
 
 class GetUserInfo(ListView): #funciona
     model = User
-    def get(self, request, userMail, **kwargs):
-        if request.method == 'GET':
-            data = User.objects.filter(mail=userMail).values()
-            return JsonResponse(list(data), safe=False)
+    def post(self, request, *args, **kwargs):
+        data = json.loads(request.body)
+        getmail = data.get('mail')
+        getPass = data.get('password')
+        data = list(User.objects.filter(mail=getmail).values())
+        findPass = User.objects.filter(password=getPass).values()
+   
+        if(data and findPass):
+            return JsonResponse(data, safe=False)
         else:
             return 'Ha ocurrido un error'
         
-    def post(self, request, *args, **kwargs):
-        data = []
-
-        if request.POST.get('password') == request.POST.get('confirmPassword'):
-        #data.append(request.POST['createAccount'])
-            data = {
-                "userType": request.POST.get('userType'),
-                "mail": request.POST.get('mail'),
-                "username": request.POST.get('username'),
-                "password": request.POST.get('password'),
-            }
-            User.objects.create(**data)
-            return JsonResponse(data, safe=False)
-        else:
-            print("Las contraseñas no coinciden")
-            return HttpResponse(204)              
-
 
 class CreateProduct(CreateView): 
     model = User

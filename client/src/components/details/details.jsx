@@ -4,11 +4,12 @@ import { useContext, useEffect, useState } from 'react';
 import ProductsContext from '../../context/productsContext';
 import upArrow from '../../assets/up-arrow.png';
 import downArrow from '../../assets/down-arrow.png';
-import addToCart from '../../assets/add-to-cart.png';
+import addToCartImg from '../../assets/add-to-cart.png';
+import AuthContext from '../../context/authContext';
 
 const Details = () => {
-
-    const {categoryCont} = useContext(ProductsContext);
+    const {session} = useContext(AuthContext);
+    const {categoryCont, addToCartContext} = useContext(ProductsContext);
     const [products, setProducts] = useState([]);
     const [details, setDetails] = useState([]);
     const [openPuntuation, setOpenPuntuation] = useState(false);
@@ -26,15 +27,29 @@ const Details = () => {
     }, [])
 
     console.log("products:", products);
-    console.log(details);
+    console.log(session);
 
-    const puntuation = (productId, rate) => {
-console.log(productId, " ", rate);
+    const puntuation = (e, productId, rate) => {
+        e.preventDefault();
+        console.log(productId, " ", rate);
     }
 
-    const addProduct = (e, productId) => {
+    const addToCart = (e, productId, productCategory, productDescription, productImage, productPrice, productRate, productCount, productTitle) => {
         e.preventDefault();
-        console.log(productId, " ");
+
+        const data = {
+            productId: productId,
+            productCategory: productCategory,
+            productDescription: productDescription,
+            productImage: productImage,
+            productPrice: productPrice,
+            productRate: productRate,
+            productCount: productCount,
+            productTitle: productTitle,
+        }
+        console.log("add: ", data);
+
+
     }
 
     return (
@@ -68,9 +83,7 @@ console.log(productId, " ", rate);
                             }
                             </div>
                             <div>
-                                <button className='addCartButton text-bg-warning' onClick></button>
-                                <button className='addCartButton text-bg-warning' onClick={(e) => addProduct(e, d.id)}><p>Add </p><img src={addToCart} alt=""></img></button>
-                                <button className='addCartButton text-bg-warning' onClick></button>
+                                <button className='addCartButton text-bg-warning' onClick={(e) => addToCart(e, d.id, d.category, d.description, d.image, d.price, d.rating.rate, d.rating.count, d.title)}><p>Add </p><img src={addToCartImg} alt=""></img></button>
                             </div>
                         </div>
                     </div>

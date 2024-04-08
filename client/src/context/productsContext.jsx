@@ -12,9 +12,13 @@ export const ProductsContextProvider = ({children}) => {
         .then(json=>console.log(json));
         setProducts(res);
     },[])*/
+
+    const addToCartContext = async (data) => {
+        const res = addToCartRequest(data);
+    }
     
     return(
-        <ProductsContext.Provider value={{categoryCont, setCategoryCont}}>{children}</ProductsContext.Provider>
+        <ProductsContext.Provider value={{categoryCont, setCategoryCont, addToCartContext}}>{children}</ProductsContext.Provider>
     )
 }
 
