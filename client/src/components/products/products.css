@@ -23,7 +23,8 @@
 }
 
 .products-img-secondary img{
-    width: 750px;
+    margin: auto;
+    width: 46%;
     object-fit: cover;
 }
 

@@ -19,9 +19,11 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    text-align: center;
     padding: 2rem 1rem;
 }
 
 .secondary-img img{
-    width: 400px;
+    margin: auto;
+    width: 96%;
 }

@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { loginRequest, signInRequest } from "../components/api/authRequests";
 import { useNavigate } from "react-router-dom";
 
@@ -11,6 +11,18 @@ export const AuthContextProvider = ({children}) => {
 
     const [session, setSession] = useState([]);
     const [SHCart, setSHCart] = useState(false);
+
+    useEffect(() => {
+        setSession(JSON.parse(localStorage.getItem('user')));
+    }, [])
+
+    useEffect(() => {
+        if(session){
+            console.log("The session has been filled", session)
+        }else{
+            console.log("Theres is no session")
+        }
+    }, [session])
 
     const signInContext = async (data) => {
       for(const key in data) {

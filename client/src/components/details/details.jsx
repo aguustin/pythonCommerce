@@ -29,7 +29,7 @@ const Details = () => {
     }, [])
 
     console.log("products:", products);
-    console.log(session);
+    console.log("ses", session);
 
     const puntuation = (e, productId, rate) => {
         e.preventDefault();
@@ -38,7 +38,6 @@ const Details = () => {
 
     const addToCart = (e, productId, productCategory, productDescription, productImage, productPrice, productRate, productCount, productTitle) => {
         e.preventDefault();
-        
         const data = {
             userId: session.id,
             productId: productId,
@@ -47,7 +46,7 @@ const Details = () => {
             productImage: productImage,
             productPrice: productPrice,
             productRate: productRate,
-            productCount: productCount,
+            productQuantity: productCount,
             productTitle: productTitle,
         }
 
@@ -61,7 +60,7 @@ const Details = () => {
         <>
         <div className="details">
             {details.map((d) => 
-                <>
+                <div key={d.id}>
                     <div>
                         <img src={d.image} alt=""></img>
                     </div>
@@ -92,7 +91,7 @@ const Details = () => {
                             </div>
                         </div>
                     </div>
-                </>
+                </div>
             )}
         </div>
         <div className='other-products'>

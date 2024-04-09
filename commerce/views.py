@@ -133,25 +133,30 @@ class UpdateCartInfo(CreateView): #REVISAR TODOO ESTOOOOOOO
         getUserId = data.get('userId')
         getProductId = data.get('productId')
         getCategoryName = data.get('productCategory')
-        getProductName = data.get('productName')
-        getDescription = data.get('description')
-        getPrice = data.get('price')
-        getQuantity = data.get('quantity')
-        getRate = data.get('rate')
-        getImage = data.get('image')
+        getProductName = data.get('productTitle')
+        getDescription = data.get('productDescription')
+        getPrice = data.get('productPrice')
+        getQuantity = data.get('productQuantity')
+        getRate = data.get('productRate')
+        getImage = data.get('productImage')
 
-        findProductById = list(Products.objects.filter(pk=getProductId).values())
+        findUserById = list(User.objects.filter(pk=getUserId).values())
+        findProductById = list(Products.objects.filter(productName=getProductName).values())
         findCategoryById = list(Categories.objects.filter(category=getCategoryName).values())
-        print(findProductById)
+      
         if(findProductById):
-            print("entro a A")
-            buy = Buy.objects.create(user_code=getUserId, product_code=getProductId, total_price=200, buy_date=timezone)
+            userId = findUserById[0]['id']
+            user_instance = User.objects.get(id=userId)
+            prodId = findProductById[0]['id']
+            prod_instance = Products.objects.get(id=prodId)
+            buy = Buy.objects.create(user_code=user_instance, product_code=prod_instance, total_price=200, buy_date=timezone.now())
             buy.save()
             return HttpResponse(200)
         else:
             if(findCategoryById):
-                print("entro a B")
-                saveProduct = Products.objects.create(category_code=findCategoryById.id, productName=getProductName, description=getDescription, price=getPrice, quantity=getQuantity, rate=getRate, image=getImage)
+                catId = findCategoryById[0]['id']
+                category_instance = Categories.objects.get(id=catId)
+                saveProduct = Products.objects.create(category_code=category_instance, productName=getProductName, description=getDescription, price=getPrice, quantity=getQuantity, rate=getRate, image=getImage)
                 saveProduct.save()
                 return HttpResponse(200)
             else:
@@ -191,5 +196,5 @@ class getUserCartById(ListView): #funciona
     def get(self, request, *args, **kwargs):
         user_id = kwargs.get('user_id')
         print("user_id: ", user_id)
-        data = Buy.objects.filter(user_code=user_id)
-        return JsonResponse(list(data.values()), safe=False)
+        data = Buy.objects.filter(user_code=user_id).values()
+        return JsonResponse(list(data), safe=False)

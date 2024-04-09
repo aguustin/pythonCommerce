@@ -1,14 +1,18 @@
 import './navigation.css';
 import { Link, useNavigate } from 'react-router-dom';
 import bag from '../../assets/bag.png';
+import logoutImg from '../../assets/log-out.png';
 import cartShops from '../../assets/shopping-trolley.png';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Cart from '../cart/cart';
 import AuthContext from '../../context/authContext';
+import ProductsContext from '../../context/productsContext';
+import { getUserCartByIdRequest } from '../api/productsRequest';
 
 const Navigation = () => {
     const navigate = useNavigate();
     const {session, setSession} = useContext(AuthContext);
+    const {cartProducts, setCartProducts} = useContext(ProductsContext);
     const [openCart, setOpenCart] = useState();
 
     const logout = () => {
@@ -17,6 +21,23 @@ const Navigation = () => {
         navigate('/');
     }
 
+    useEffect(() => {
+        // Check if session exists before fetching cart data
+        if (session.id) {
+            try{
+                const getCartData = async () => {
+                    console.log("cart useEffect: " + session.id)
+                    const res = await getUserCartByIdRequest(session.id);
+                    setCartProducts(res.data);
+                };
+                getCartData();
+            }catch(err){
+                console.log('')
+            }
+        }
+    }, [session, setCartProducts]);
+
+    console.log("cart ", cartProducts)
     return(
         <>
             <div className="navigation">
@@ -46,7 +67,7 @@ const Navigation = () => {
                     ?
                     <>
                         <button className='cartShop' onClick={() => setOpenCart(!openCart)}><img src={cartShops} alt=""></img></button>
-                        <button onClick={() => logout()}>Logout</button>
+                        <button className='logout' onClick={() => logout()}><img src={logoutImg} alt=""></img></button>
                     </>
                     :
                     <div className='account'>

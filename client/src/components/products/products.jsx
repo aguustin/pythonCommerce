@@ -35,7 +35,7 @@ const Products = () => {
                         {
                             productsByCat.map((p) => {
                                 return(
-                                    <Link to={`/details/${p.id}`} className='goToDetails'>
+                                <Link key={p.id} to={`/details/${p.id}`} className='goToDetails'>
                                  <div className="card">
                                         <img src={p.image} className="card-img-top" alt=""/>
                                         <div className="card-body">
@@ -44,7 +44,7 @@ const Products = () => {
                                             <h2>${p.price}</h2>
                                         </div>
                                   </div>
-                                    </Link>
+                                </Link>
                                 )
                             })
                         }

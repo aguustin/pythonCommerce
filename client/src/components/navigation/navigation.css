@@ -39,7 +39,7 @@
 .bootstrapInput{
     position: absolute;
     width: 300px;
-    right: 12rem;
+    right: 15rem;
 }
 
 
@@ -47,7 +47,7 @@
     position: absolute;
     height: 70px;
     width: 70px;
-    right: 3rem;
+    right: 8rem;
     background-color: transparent;
     border: none;
     border-radius: 50%;
@@ -75,4 +75,11 @@
     text-decoration: none;
     color:black;
     font-weight: 500;
+}
+
+.logout{
+    position: absolute;
+    right: 2rem;
+    background-color: transparent;
+    border: none;
 }

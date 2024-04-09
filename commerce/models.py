@@ -82,7 +82,7 @@ class User(models.Model):
     #birthday = models.DateField(auto_now_add=True, verbose_name="Creation Time")
     
     def __str__(self):
-        return self.username
+        return self.mail
     
     def toJSON(self):
         item = model_to_dict(self)
@@ -100,7 +100,7 @@ class Buy(models.Model):
     buy_date = models.DateField(null=True)
 
     def __str__(self):
-        return self.user_code
+        return str(self.user_code)
     
     def toJSON(self):
         item = model_to_dict(self)
@@ -110,7 +110,7 @@ class Buy(models.Model):
         db_table = 'Buy'
         ordering = ['id']
     
-    
+
 class Buy_details(models.Model):
     product_code = models.ForeignKey(Products, on_delete=models.CASCADE, default="")
     buy_code = models.ForeignKey(Buy, on_delete=models.CASCADE, default="")
