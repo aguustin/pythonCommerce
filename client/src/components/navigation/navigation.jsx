@@ -1,5 +1,5 @@
 import './navigation.css';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import bag from '../../assets/bag.png';
 import cartShops from '../../assets/shopping-trolley.png';
 import { useContext, useState } from 'react';
@@ -7,8 +7,15 @@ import Cart from '../cart/cart';
 import AuthContext from '../../context/authContext';
 
 const Navigation = () => {
-    const {session, SHCart} = useContext(AuthContext);
+    const navigate = useNavigate();
+    const {session, setSession} = useContext(AuthContext);
     const [openCart, setOpenCart] = useState();
+
+    const logout = () => {
+        localStorage.removeItem('user');
+        setSession(null);
+        navigate('/');
+    }
 
     return(
         <>
@@ -39,6 +46,7 @@ const Navigation = () => {
                     ?
                     <>
                         <button className='cartShop' onClick={() => setOpenCart(!openCart)}><img src={cartShops} alt=""></img></button>
+                        <button onClick={() => logout()}>Logout</button>
                     </>
                     :
                     <div className='account'>

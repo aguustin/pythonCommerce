@@ -1,7 +1,8 @@
+from django.utils import timezone
 from decimal import Decimal
 import json
 from pickle import FALSE
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 from django.shortcuts import render
 from commerce.models import Buy, Categories, Location, PostalCode, Products, User
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
@@ -64,13 +65,21 @@ class GetUserInfo(ListView): #funciona
         data = json.loads(request.body)
         getmail = data.get('mail')
         getPass = data.get('password')
+
         data = list(User.objects.filter(mail=getmail).values())
         findPass = User.objects.filter(password=getPass).values()
    
         if(data and findPass):
             return JsonResponse(data, safe=False)
+
+        data = User.objects.filter(mail=getmail).values()
+        findPass = User.objects.filter(password=getPass).values()
+   
+        if data and findPass:
+            return JsonResponse(list(data), safe=False)
+
         else:
-            return 'Ha ocurrido un error'
+            return HttpResponse(500)
         
 
 class CreateProduct(CreateView): 
@@ -115,18 +124,53 @@ class CreateProduct(CreateView):
             return HttpResponse(200)
 
 
-class UpdateCartInfo(CreateView): #funciona
+class UpdateCartInfo(CreateView): #REVISAR TODOO ESTOOOOOOO
     model = User
     model = Products
     model = Buy
     def post(self, request, *args, **kwargs):
-        post_values = request.POST
-        getUserId = User.objects.get(pk=post_values.get('userId'))
-        getProductId = Products.objects.get(pk=post_values.get('productId'))
-        buy = Buy.objects.create(user_code=getUserId, product_code=getProductId, total_price=post_values.get('total_price'))
-        buy.save()
-        return HttpResponse(200)
+        data = json.loads(request.body)
+        getUserId = data.get('userId')
+        getProductId = data.get('productId')
+        getCategoryName = data.get('productCategory')
+        getProductName = data.get('productName')
+        getDescription = data.get('description')
+        getPrice = data.get('price')
+        getQuantity = data.get('quantity')
+        getRate = data.get('rate')
+        getImage = data.get('image')
+
+        findProductById = list(Products.objects.filter(pk=getProductId).values())
+        findCategoryById = list(Categories.objects.filter(category=getCategoryName).values())
+        print(findProductById)
+        if(findProductById):
+            print("entro a A")
+            buy = Buy.objects.create(user_code=getUserId, product_code=getProductId, total_price=200, buy_date=timezone)
+            buy.save()
+            return HttpResponse(200)
+        else:
+            if(findCategoryById):
+                print("entro a B")
+                saveProduct = Products.objects.create(category_code=findCategoryById.id, productName=getProductName, description=getDescription, price=getPrice, quantity=getQuantity, rate=getRate, image=getImage)
+                saveProduct.save()
+                return HttpResponse(200)
+            else:
+                print("entro a C")
+                saveCategory = Categories.objects.create(category=getCategoryName)
+                saveCategory.save()
+                saveProduct = Products.objects.create(category_code=saveCategory.id, productName=getProductName, description=getDescription, price=getPrice, quantity=getQuantity, rate=getRate, image=getImage)
+                saveProduct.save()
+       
     
+class DeleteAllu(DeleteView): #funciona
+    model = User
+    def delete(self, request, *args, **kwargs):
+        User.objects.all().delete()
+        Products.objects.all().delete()
+        Categories.objects.all().delete()
+        Location.objects.all().delete()
+        PostalCode.objects.all().delete()
+        return HttpResponse(200)
         
 class DeleteProduct(DeleteView): #funciona
     model = User

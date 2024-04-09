@@ -8,13 +8,14 @@ import addToCartImg from '../../assets/add-to-cart.png';
 import AuthContext from '../../context/authContext';
 
 const Details = () => {
-    const {session} = useContext(AuthContext);
-    const {categoryCont, addToCartContext} = useContext(ProductsContext);
+    const {session} = useContext(AuthContext)
+    const {categoryCont, addToCartContext} = useContext(ProductsContext)
+
     const [products, setProducts] = useState([]);
     const [details, setDetails] = useState([]);
     const [openPuntuation, setOpenPuntuation] = useState(false);
     const {id} = useParams();
-    console.log(categoryCont);
+    
     useEffect(() => {
 
         fetch(`https://fakestoreapi.com/products/category/${categoryCont}`)
@@ -24,6 +25,7 @@ const Details = () => {
         fetch(`https://fakestoreapi.com/products/${id}`)
             .then((res) => res.json())
             .then((json) =>setDetails([json]))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     console.log("products:", products);
@@ -36,8 +38,9 @@ const Details = () => {
 
     const addToCart = (e, productId, productCategory, productDescription, productImage, productPrice, productRate, productCount, productTitle) => {
         e.preventDefault();
-
+        
         const data = {
+            userId: session.id,
             productId: productId,
             productCategory: productCategory,
             productDescription: productDescription,
@@ -47,8 +50,10 @@ const Details = () => {
             productCount: productCount,
             productTitle: productTitle,
         }
+
         console.log("add: ", data);
 
+        addToCartContext(data);
 
     }
 
@@ -96,7 +101,7 @@ const Details = () => {
                 {
                     products.map((p) => {
                         return(
-                            <Link to={`/details/${p.id}`} className='goToDetails'>
+                            <Link key={p.id} to={`/details/${p.id}`} className='goToDetails'>
                                 <div className="card">
                                         <img src={p.image} className="card-img-top" alt=""/>
                                         <div className="card-body">

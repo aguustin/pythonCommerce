@@ -23,9 +23,9 @@ class Products(models.Model):
     category_code = models.ForeignKey(Categories, on_delete=models.CASCADE, default="")
     productName = models.CharField(max_length=100)
     description = models.CharField(max_length=500)
-    price = models.IntegerField()
+    price = models.DecimalField(max_digits=6, decimal_places=2, null=False)
     quantity = models.IntegerField()
-    rate = models.IntegerField()
+    rate = models.DecimalField(max_digits=2, decimal_places=1, null=False)
     image = models.ImageField(upload_to='productsImages/')
     def __str__(self):
         return self.productName
@@ -82,7 +82,7 @@ class User(models.Model):
     #birthday = models.DateField(auto_now_add=True, verbose_name="Creation Time")
     
     def __str__(self):
-        return self.mail
+        return self.username
     
     def toJSON(self):
         item = model_to_dict(self)
@@ -91,6 +91,7 @@ class User(models.Model):
     class Meta:
         db_table = 'User'
         ordering = ['id']
+
 
 class Buy(models.Model):
     user_code = models.ForeignKey(User, on_delete=models.CASCADE, default="")
@@ -108,6 +109,7 @@ class Buy(models.Model):
     class Meta:
         db_table = 'Buy'
         ordering = ['id']
+    
     
 class Buy_details(models.Model):
     product_code = models.ForeignKey(Products, on_delete=models.CASCADE, default="")

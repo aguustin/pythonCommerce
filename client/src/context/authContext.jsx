@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext()
 
+// eslint-disable-next-line react/prop-types
 export const AuthContextProvider = ({children}) => {
 
     const navigate = useNavigate();
@@ -18,11 +19,11 @@ export const AuthContextProvider = ({children}) => {
             return false;
         }
       }
-      const res = await signInRequest(data);
-      if(res.status === 200){
-          await signInRequest(data);
-          alert(`Successfully signed`)
-      }
+      await signInRequest(data);
+   
+      await signInRequest(data);
+      alert(`Successfully signed`)
+      
     }
 
     const loginContext = async (data) => {
@@ -30,12 +31,12 @@ export const AuthContextProvider = ({children}) => {
         console.log(res.data)
         localStorage.removeItem('user');
         localStorage.setItem('user', JSON.stringify(res.data[0]));
-        setSession(JSON.parse(localStorage.getItem('user')));
+        await setSession(JSON.parse(localStorage.getItem('user')));
         navigate('/');
     }
 
     return(
-        <AuthContext.Provider value={{session, SHCart, setSHCart, signInContext, loginContext}}>
+        <AuthContext.Provider value={{session, setSession, SHCart, setSHCart, signInContext, loginContext}}>
             {children}
         </AuthContext.Provider>
     )

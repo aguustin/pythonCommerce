@@ -1,10 +1,13 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState} from "react";
+import { addToCartRequest } from "../components/api/productsRequest";
 
 const ProductsContext = createContext();
 
+// eslint-disable-next-line react/prop-types
 export const ProductsContextProvider = ({children}) => {
 
    const [categoryCont, setCategoryCont] = useState([]);
+
 
     /*useEffect(() => {
         const res = fetch('https://fakestoreapi.com/products')
@@ -14,11 +17,15 @@ export const ProductsContextProvider = ({children}) => {
     },[])*/
 
     const addToCartContext = async (data) => {
-        const res = addToCartRequest(data);
+        const res = await addToCartRequest(data);
+        console.log(res.data)
     }
-    
+
     return(
-        <ProductsContext.Provider value={{categoryCont, setCategoryCont, addToCartContext}}>{children}</ProductsContext.Provider>
+        <ProductsContext.Provider value={{categoryCont, setCategoryCont, addToCartContext}}>
+            {children}
+        </ProductsContext.Provider>
+
     )
 }
 
