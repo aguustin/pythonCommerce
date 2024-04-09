@@ -23,9 +23,9 @@ class Products(models.Model):
     category_code = models.ForeignKey(Categories, on_delete=models.CASCADE, default="")
     productName = models.CharField(max_length=100)
     description = models.CharField(max_length=500)
-    price = models.IntegerField()
+    price = models.DecimalField(max_digits=6, decimal_places=2, null=False)
     quantity = models.IntegerField()
-    rate = models.IntegerField()
+    rate = models.DecimalField(max_digits=2, decimal_places=1, null=False)
     image = models.ImageField(upload_to='productsImages/')
     def __str__(self):
         return self.productName

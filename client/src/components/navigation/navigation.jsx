@@ -7,7 +7,7 @@ import Cart from '../cart/cart';
 import AuthContext from '../../context/authContext';
 
 const Navigation = () => {
-    const {SHCart} = useContext(AuthContext);
+    const {session, SHCart} = useContext(AuthContext);
     const [openCart, setOpenCart] = useState();
 
     return(
@@ -35,7 +35,7 @@ const Navigation = () => {
                     <span className="input-group-text" id="inputGroup-sizing-default">Search</span>
                     <input type="text" className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
                 </div>
-                {SHCart 
+                {session 
                     ?
                     <>
                         <button className='cartShop' onClick={() => setOpenCart(!openCart)}><img src={cartShops} alt=""></img></button>
@@ -44,7 +44,9 @@ const Navigation = () => {
                     <div className='account'>
                         <a href="/account/getIn">Get in</a>
                         <a href="/account/signIn">Sign In</a> 
-                    </div>}
+                    </div>
+                    
+                }
                 {openCart && <Cart/>}
               
             </div>

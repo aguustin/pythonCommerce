@@ -14,19 +14,19 @@ function App() {
 
   return (
     <>
-    <AuthContextProvider>
-    <ProductsContextProvider>
-      <BrowserRouter>
-        <Navigation/>
-        <Routes>
-          <Route path="/" element={<Home/>} />
-          <Route path="/products/:category" element={<Products/>} />
-          <Route path="/details/:id" element={<Details/>} />
-          <Route path="/account/:change" element={<UserForm/>} />
-        </Routes>
-      </BrowserRouter>
-    </ProductsContextProvider>
-    </AuthContextProvider>
+    <BrowserRouter>
+      <AuthContextProvider>
+      <ProductsContextProvider>
+          <Navigation/>
+          <Routes>
+            <Route path="/" element={<Home/>} />
+            <Route path="/products/:category" element={<Products/>} />
+            <Route path="/details/:id" element={<Details/>} />
+            <Route path="/account/:change" element={<UserForm/>} />
+          </Routes>
+      </ProductsContextProvider>
+      </AuthContextProvider>
+    </BrowserRouter>
     </>
   )
 }
