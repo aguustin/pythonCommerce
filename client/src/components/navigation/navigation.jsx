@@ -23,7 +23,7 @@ const Navigation = () => {
 
     useEffect(() => {
         // Check if session exists before fetching cart data
-        if (session.id) {
+        if(session) {
             try{
                 const getCartData = async () => {
                     console.log("cart useEffect: " + session.id)
