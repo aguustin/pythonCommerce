@@ -9,7 +9,7 @@ const Cart = () => {
 
     const {session} = useContext(AuthContext);
     const {cartProducts, setCartProducts} = useContext(ProductsContext);
-    console.log(cartProducts);
+    
     return(
         <>
             <div className="cart">
@@ -20,7 +20,7 @@ const Cart = () => {
                         <img className="trash" src={trash} alt=""></img>
                     </div>
                     <div className='product-desc'>
-                        <h3>{c.product_code_id.ProductName}</h3>
+                        <h3>{c.product_code_id.productName}</h3>
                         <h2 className='text-success'>${c.product_code_id.price}</h2>
                         <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit.
                          Eveniet.</p>

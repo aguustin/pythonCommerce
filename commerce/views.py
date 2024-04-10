@@ -4,9 +4,12 @@ import json
 from pickle import FALSE
 from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 from django.shortcuts import render
+from requests import Response
 from commerce.models import Buy, Categories, Location, PostalCode, Products, User
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.core.serializers import serialize
+
+from commerce.serializers import BuySerializer
 # Create your views here.
 
 class CreateUser(CreateView): #funciona
@@ -30,8 +33,6 @@ class CreateUser(CreateView): #funciona
 
             PostalCodes = PostalCode()
             postal_n = data.get('cPostal')
-
-            print("entro")
                 
             Locations = Location.objects.create(country=country, city=city, address=address, number=number)
             Locations.save()
@@ -196,5 +197,7 @@ class getUserCartById(ListView): #funciona
     def get(self, request, *args, **kwargs):
         user_id = kwargs.get('user_id')
         print("user_id: ", user_id)
-        data = Buy.objects.filter(user_code=user_id).values()
-        return JsonResponse(list(data), safe=False)
+        data = list(Buy.objects.filter(user_code=user_id).values())
+        serializer = BuySerializer(data, many=True)
+        
+        return Response(serializer.data)

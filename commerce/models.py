@@ -32,6 +32,10 @@ class Products(models.Model):
 
     def toJSON(self):
         item = model_to_dict(self)
+        item['category_code'] = self.category_code.toJSON()
+        item['price'] = format(self.price, '.2f')
+        item['rate'] = format(self.rate, '.1f')
+        item['image'] = self.get_image()
         return item
     
     class Meta:
@@ -65,6 +69,7 @@ class PostalCode(models.Model):
     
     def toJSON(self):
         item = model_to_dict(self)
+        item['postal_number'] = self.postal_number.toJSON()
         return item
     
     class Meta:
@@ -86,6 +91,8 @@ class User(models.Model):
     
     def toJSON(self):
         item = model_to_dict(self)
+        item['location_code'] = self.location_code.toJSON()
+        item['postal_code'] = self.postal_code.toJSON()
         return item
     
     class Meta:
@@ -104,6 +111,8 @@ class Buy(models.Model):
     
     def toJSON(self):
         item = model_to_dict(self)
+        item['user_code'] = self.user_code.toJSON()
+        item['product_code'] = self.product_code.toJSON()
         return item
     
     class Meta:
