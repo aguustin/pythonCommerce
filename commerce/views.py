@@ -196,8 +196,7 @@ class getAllBuys(ListView): #funciona
 class getUserCartById(ListView): #funciona
     def get(self, request, *args, **kwargs):
         user_id = kwargs.get('user_id')
-        print("user_id: ", user_id)
-        data = list(Buy.objects.filter(user_code=user_id).values())
+        data = Buy.objects.filter(user_code=user_id)
         serializer = BuySerializer(data, many=True)
-        
-        return Response(serializer.data)
+        return JsonResponse(serializer.data, safe=False)
+    

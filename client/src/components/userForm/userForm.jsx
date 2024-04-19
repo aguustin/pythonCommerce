@@ -100,7 +100,7 @@ const UserForm = () => {
                         </div>
                         <div className="form-group mb-3">
                             <label>Password</label>
-                            <input type="mail" className="form-control" placeholder="Password" name="password" />
+                            <input type="password" className="form-control" placeholder="Password" name="password" />
                         </div>
                         <div className='d-flex align-center justify-content-center'>
                             <button className='cancel'><a href="/">Cancel</a></button>

@@ -20,13 +20,12 @@ const Navigation = () => {
         setSession(null);
         navigate('/');
     }
-
+   
     useEffect(() => {
         // Check if session exists before fetching cart data
         if(session) {
             try{
                 const getCartData = async () => {
-                    console.log("cart useEffect: " + session.id)
                     const res = await getUserCartByIdRequest(session.id);
                     setCartProducts(res.data);
                 };

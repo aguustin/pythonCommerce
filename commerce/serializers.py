@@ -2,9 +2,10 @@ from rest_framework import serializers
 from .models import Buy_details, Categories, Location, PostalCode, Products, Buy, User
 
 class CategoriesSerializer(serializers.ModelSerializer):
+    
     class Meta:
-        model: Categories
-        field = ['category']
+        model = Categories
+        fields = ['category']
 
 class ProductsSerializer(serializers.ModelSerializer):
 
@@ -16,12 +17,12 @@ class ProductsSerializer(serializers.ModelSerializer):
 
 class LocationSerializer(serializers.ModelSerializer):
     class Meta:
-        model: Location
+        model = Location
         fields = ['id', 'country', 'city', 'address' , 'number']
 
 class PostalCodeSerializer(serializers.ModelSerializer):
     class Meta:
-        model: PostalCode
+        model = PostalCode
         fields = ['id', 'postal_number']
 
 class UserSerializer(serializers.ModelSerializer):
@@ -30,7 +31,7 @@ class UserSerializer(serializers.ModelSerializer):
     postal_code = PostalCodeSerializer()
 
     class Meta:
-        model: User
+        model = User
         fields = ['id', 'location_code', 'postal_code', 'userType', 'mail', 'username', 'password']
 
 class BuySerializer(serializers.ModelSerializer):
@@ -39,7 +40,7 @@ class BuySerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Buy
-        fields = ['id', 'user_code', 'product_code', 'total_price', 'buy_date']
+        fields = ['id', 'product_code', 'user_code', 'total_price', 'buy_date']
 
 class Buy_detailsSerializer(serializers.ModelSerializer):
     product_code = ProductsSerializer()  # Assuming you only need the ID of the user

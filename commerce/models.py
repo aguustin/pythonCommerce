@@ -101,8 +101,8 @@ class User(models.Model):
 
 
 class Buy(models.Model):
-    user_code = models.ForeignKey(User, on_delete=models.CASCADE, default="")
     product_code = models.ForeignKey(Products, on_delete=models.CASCADE, default="")
+    user_code = models.ForeignKey(User, on_delete=models.CASCADE, default="")
     total_price = models.DecimalField(max_digits=10, decimal_places=2, default="")
     buy_date = models.DateField(null=True)
 
@@ -111,8 +111,8 @@ class Buy(models.Model):
     
     def toJSON(self):
         item = model_to_dict(self)
-        item['user_code'] = self.user_code.toJSON()
         item['product_code'] = self.product_code.toJSON()
+        item['user_code'] = self.user_code.toJSON()
         return item
     
     class Meta:
