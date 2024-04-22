@@ -35,12 +35,12 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ['id', 'location_code', 'postal_code', 'userType', 'mail', 'username', 'password']
 
 class BuySerializer(serializers.ModelSerializer):
-    product_code = ProductsSerializer()  # Serialize the related Products object
+   # product_code = ProductsSerializer()  # Serialize the related Products object
     user_code = UserSerializer()  # Assuming you only need the ID of the user
     
     class Meta:
         model = Buy
-        fields = ['id', 'product_code', 'user_code', 'total_price', 'buy_date']
+        fields = ['id', 'user_code', 'total_price']
 
 class Buy_detailsSerializer(serializers.ModelSerializer):
     product_code = ProductsSerializer()  # Assuming you only need the ID of the user
@@ -48,4 +48,4 @@ class Buy_detailsSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Buy_details
-        fields = ['id', 'product_code', 'buy_code']
+        fields = ['id', 'product_code', 'buy_code', 'sub_total', 'but_date']

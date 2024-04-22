@@ -57,15 +57,16 @@ class BuyAdmin(admin.ModelAdmin):
     list_display = [
         'user_code',
         'total_price',
-        'buy_date'
     ]
     
 admin.site.register(Buy, BuyAdmin)
 
 class Buy_detailsAdmin(admin.ModelAdmin):
     list_display = [
+        'buy_code',
         'product_code',
-        'buy_code'
+        'sub_total',
+        'buy_date'
     ]
 
 admin.site.register(Buy_details, Buy_detailsAdmin)

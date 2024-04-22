@@ -25,6 +25,9 @@ const Cart = () => {
                         <p>{c.product_code.description}</p>
                     </div>
                 </div>)}
+                <div>
+                    <button onClick={() => a}></button>
+                </div>
             </div>
         </>
     )
