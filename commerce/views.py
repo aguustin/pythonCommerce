@@ -5,11 +5,11 @@ from pickle import FALSE
 from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 from django.shortcuts import render
 from requests import Response
-from commerce.models import Buy, Categories, Location, PostalCode, Products, User
+from commerce.models import Buy, Buy_details, Categories, Location, PostalCode, Products, User
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.core.serializers import serialize
 
-from commerce.serializers import BuySerializer
+from commerce.serializers import Buy_detailsSerializer, BuySerializer
 # Create your views here.
 
 class CreateUser(CreateView): #funciona
@@ -43,7 +43,7 @@ class CreateUser(CreateView): #funciona
             usersData = User.objects.create(location_code=Locations, postal_code=PostalCodes, userType=2, mail=mail, username=username, password=password)
             usersData.save()
 
-            return HttpResponse(200)
+            return HttpResponse('200')
             
 
 class GetAllProducts(ListView): #funciona
@@ -128,7 +128,7 @@ class CreateProduct(CreateView):
 class UpdateCartInfo(CreateView): #REVISAR TODOO ESTOOOOOOO
     model = User
     model = Products
-    model = Buy
+    model = Buy_details
     def post(self, request, *args, **kwargs):
         data = json.loads(request.body)
         getUserId = data.get('userId')
@@ -150,7 +150,8 @@ class UpdateCartInfo(CreateView): #REVISAR TODOO ESTOOOOOOO
             user_instance = User.objects.get(id=userId)
             prodId = findProductById[0]['id']
             prod_instance = Products.objects.get(id=prodId)
-            buy = Buy.objects.create(user_code=user_instance, product_code=prod_instance, total_price=200, buy_date=timezone.now())
+            buy = Buy_details.objects.create(user_code=user_instance, product_code=prod_instance, sub_total=getPrice, buy_date=timezone.now())
+            print(prod_instance)
             buy.save()
             return HttpResponse(200)
         else:
@@ -187,16 +188,18 @@ class DeleteProduct(DeleteView): #funciona
     
 
 class getAllBuys(ListView): #funciona
-    model = Buy
+    model = Buy_details
     def get(self, request, *args, **kwargs):
-        data = Buy.objects.all().values()
+        data = Buy_details.objects.all().values()
         return JsonResponse(list(data), safe=False)
     
     
 class getUserCartById(ListView): #funciona
     def get(self, request, *args, **kwargs):
         user_id = kwargs.get('user_id')
-        data = Buy.objects.filter(user_code=user_id)
-        serializer = BuySerializer(data, many=True)
+        print('userID: ', user_id)
+        data = Buy_details.objects.filter(user_code=user_id)
+        serializer = Buy_detailsSerializer(data, many=True)
+        print('serializer: ', serializer.data)
         return JsonResponse(serializer.data, safe=False)
     

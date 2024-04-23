@@ -26,7 +26,7 @@ const Cart = () => {
                     </div>
                 </div>)}
                 <div>
-                    <button onClick={() => a}></button>
+                    <button><a href='/buyForm'>Buy</a></button>
                 </div>
             </div>
         </>

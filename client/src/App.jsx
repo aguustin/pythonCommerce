@@ -9,6 +9,7 @@ import { ProductsContextProvider } from './context/productsContext';
 import Products from './components/products/products';
 import UserForm from './components/userForm/userForm';
 import { AuthContextProvider } from './context/authContext';
+import BuyForm from './components/buyForm/buyForm';
 
 function App() {
 
@@ -23,6 +24,7 @@ function App() {
             <Route path="/products/:category" element={<Products/>} />
             <Route path="/details/:id" element={<Details/>} />
             <Route path="/account/:change" element={<UserForm/>} />
+            <Route path="/buyForm" element={<BuyForm/>}/>
           </Routes>
       </ProductsContextProvider>
       </AuthContextProvider>

@@ -9,7 +9,7 @@ import AuthContext from '../../context/authContext';
 
 const Details = () => {
     const {session} = useContext(AuthContext)
-    const {categoryCont, addToCartContext} = useContext(ProductsContext)
+    const {categoryCont, setCartProducts, cartProducts, addToCartContext} = useContext(ProductsContext)
 
     const [products, setProducts] = useState([]);
     const [details, setDetails] = useState([]);
@@ -26,10 +26,12 @@ const Details = () => {
             .then((res) => res.json())
             .then((json) =>setDetails([json]))
     // eslint-disable-next-line react-hooks/exhaustive-deps
+
+        localStorage.setItem('cartInfo', JSON.stringify(cartProducts));
+        setCartProducts(JSON.parse(localStorage.getItem('cartInfo')));
     }, [])
 
-    console.log("products:", products);
-    console.log("ses", session);
+    
 
     const puntuation = (e, productId, rate) => {
         e.preventDefault();

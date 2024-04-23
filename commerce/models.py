@@ -28,7 +28,7 @@ class Products(models.Model):
     rate = models.DecimalField(max_digits=2, decimal_places=1, null=False)
     image = models.ImageField(upload_to='productsImages/')
     def __str__(self):
-        return self.productName
+        return str(self.id)
 
     def toJSON(self):
         item = model_to_dict(self)
@@ -87,7 +87,7 @@ class User(models.Model):
     #birthday = models.DateField(auto_now_add=True, verbose_name="Creation Time")
     
     def __str__(self):
-        return self.mail
+        return str(self.id)
     
     def toJSON(self):
         item = model_to_dict(self)
@@ -103,10 +103,11 @@ class Buy(models.Model):
     user_code = models.ForeignKey(User, on_delete=models.CASCADE, default="")
     total_price = models.DecimalField(max_digits=10, decimal_places=2, default="")
     def __str__(self):
-        return self.id 
+        return str(self.user_code) 
 
     def toJSON(self):
         item = model_to_dict(self)
+        item['user_code'] = self.user_code.toJSON()
         return item
     
     class Meta:
@@ -114,16 +115,19 @@ class Buy(models.Model):
         ordering = ['id']
 
 class Buy_details(models.Model):
-    buy_code = models.ForeignKey(Buy, on_delete=models.CASCADE, default="")
+    user_code = models.ForeignKey(User, on_delete=models.CASCADE, default="")
+    buy_code = models.ForeignKey(Buy, on_delete=models.CASCADE, default="", null=True)
     product_code = models.ForeignKey(Products, on_delete=models.CASCADE, default="")
     sub_total = models.DecimalField(max_digits=10, decimal_places=2, default="")
     buy_date = models.DateField(null=True)
 
     def __str__(self):
-        return self.id
+        return str(self.id)
     
     def toJSON(self):
         item = model_to_dict(self)
+        item['user_code'] = self.user_code.toJSON()
+        item['buy_code'] = self.buy_code.toJSON()
         item['product_code'] = self.product_code.toJSON()
         return item
     
