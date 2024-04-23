@@ -1,13 +1,12 @@
 import './cart.css';
 import trash from '../../assets/recycle-bin.png';
-import bag from '../../assets/bag.png';
 import { useContext } from 'react';
 import ProductsContext from '../../context/productsContext';
-import AuthContext from '../../context/authContext';
+//import AuthContext from '../../context/authContext';
 
 const Cart = () => {
 
-    const {session} = useContext(AuthContext);
+    //const {session} = useContext(AuthContext);
     const {cartProducts} = useContext(ProductsContext);
     
     return(

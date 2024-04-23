@@ -151,7 +151,6 @@ class UpdateCartInfo(CreateView): #REVISAR TODOO ESTOOOOOOO
             prodId = findProductById[0]['id']
             prod_instance = Products.objects.get(id=prodId)
             buy = Buy_details.objects.create(user_code=user_instance, product_code=prod_instance, sub_total=getPrice, buy_date=timezone.now())
-            print(prod_instance)
             buy.save()
             return HttpResponse(200)
         else:
@@ -162,7 +161,6 @@ class UpdateCartInfo(CreateView): #REVISAR TODOO ESTOOOOOOO
                 saveProduct.save()
                 return HttpResponse(200)
             else:
-                print("entro a C")
                 saveCategory = Categories.objects.create(category=getCategoryName)
                 saveCategory.save()
                 saveProduct = Products.objects.create(category_code=saveCategory.id, productName=getProductName, description=getDescription, price=getPrice, quantity=getQuantity, rate=getRate, image=getImage)
@@ -197,9 +195,26 @@ class getAllBuys(ListView): #funciona
 class getUserCartById(ListView): #funciona
     def get(self, request, *args, **kwargs):
         user_id = kwargs.get('user_id')
-        print('userID: ', user_id)
         data = Buy_details.objects.filter(user_code=user_id)
         serializer = Buy_detailsSerializer(data, many=True)
-        print('serializer: ', serializer.data)
         return JsonResponse(serializer.data, safe=False)
+    
+class orderByUser(CreateView):
+    def post(self, request, *args, **kwargs):
+        data = json.loads(request.body)
+        lengthData = len(data)
+        total = 0
+        #print("di data: ", data)
+        #print('userId: ', data[0]['user_code']['id'],  'lengthData: ' , lengthData)
+
+        for item in data:
+            total += Decimal(item['sub_total'])
+
+        Buy.objects.create(user_code=data[0]['user_code']['id'], total_price=total)
+        Buy.save()
+
+        #buscar una forma de matchear con las filas que contengan el user_code del usuario y el buy_code vacio para meterles el pk creado de la tabla "Buy"
+
+        
+        return HttpResponse('200')
     

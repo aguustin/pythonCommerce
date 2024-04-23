@@ -5,12 +5,12 @@ import bag from '../../assets/bag.png';
 
 const BuyForm = () => {
 
-    const {cartProducts} = useContext(ProductsContext);
+    const {cartProducts, orderContext} = useContext(ProductsContext);
 
     return(
         <div>
 
-            <form className="buyForm">
+            <form className="buyForm" onSubmit={() =>  orderContext()}>
                 <div>
                     <div className='buyForm-group'>
                         <label className=''>Name of owner</label>
@@ -22,30 +22,31 @@ const BuyForm = () => {
                     </div>
                     <div className='buyForm-group'>
                         <label className=''>CVC</label>
-                        <input type="number" className="form-control" placeholder="Email" name="cvc" />
+                        <input type="number" className="form-control" name="cvc" />
                     </div>
                     <div>
                         <label className=''>Expiration Date</label>
-                        <input type="date" className="form-control" placeholder="Email" name="expirationDate" />
+                        <input type="date" className="form-control" name="expirationDate" />
                     </div>
                     <div className='buyForm-group'>
                         <label className=''>Adress</label>
-                        <input type="text" className="form-control" placeholder="Direccion" name="address" />
+                        <input type="text" className="form-control" name="address" />
                     </div>
                     <div className='buyForm-group'>
                         <label className=''>Adress Number</label>
-                        <input type="number" className="form-control" placeholder="Numero" name="addressNumber" />
+                        <input type="number" className="form-control" name="addressNumber" />
                     </div>
                 </div>
                 <div>
-                    <div>
+                    {cartProducts.map((cart) => 
+                    <div key={cart.id}>
                         <img src={bag} alt=""></img>
                         <div>
                             <h3>Product title</h3>
                             <p>Product category</p>
                             <label>Price: $295.90</label>
                         </div>
-                    </div>
+                    </div>)}
                     <button type="submit" className="">Order</button>
                 </div>
             </form>
