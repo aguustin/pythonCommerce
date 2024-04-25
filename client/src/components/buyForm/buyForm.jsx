@@ -7,9 +7,9 @@ const BuyForm = () => {
 
     const {cartProducts, orderContext} = useContext(ProductsContext);
 
-    const order = (e) => {
+    const order = async (e) => {
         e.preventDefault();
-        orderContext();
+        await orderContext();
     }
 
     return(

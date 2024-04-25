@@ -195,7 +195,7 @@ class getAllBuys(ListView): #funciona
 class getUserCartById(ListView): #funciona
     def get(self, request, *args, **kwargs):
         user_id = kwargs.get('user_id')
-        data = Buy_details.objects.filter(user_code=user_id)
+        data = Buy_details.objects.filter(user_code=user_id, buy_code=None)
         serializer = Buy_detailsSerializer(data, many=True)
         return JsonResponse(serializer.data, safe=False)
     
@@ -210,20 +210,20 @@ class orderByUser(CreateView):
             total += Decimal(item['sub_total'])
 
         new_buy = Buy.objects.create(user_code=user_instance, total_price=total)
-        print("New Buy ID:", new_buy.id)
-        product_ids = [item['product_code']['id'] for item in data]
 
         for item in data:
             product_id = item['product_code']['id']
-                
-                # Find the Buy_details with matching user, product, and no existing buy_code
-            buy_detail = Buy_details.objects.filter(
+
+            print("New Buy ID:", new_buy.id)
+
+            # Find the Buy_details with matching user, product, and no existing buy_code
+            buy_details = Buy_details.objects.filter(
                 user_code=user_instance,
                 product_code_id=product_id,
                 buy_code=None
-            ).first()  # Retrieve the first matching Buy_detail
+            )  # Retrieve the first matching Buy_detail
                 
-            if buy_detail:
+            for buy_detail in buy_details:
                 buy_detail.buy_code = new_buy
                 buy_detail.save()
 

@@ -23,6 +23,7 @@ export const ProductsContextProvider = ({children}) => {
     }
 
     const orderContext = async () => {
+        console.log('orderdddd')
         const serializeCartProducts = JSON.stringify(cartProducts);
         const res = await orderRequest(serializeCartProducts);
         localStorage.setItem('order', JSON.stringify(res.data))
