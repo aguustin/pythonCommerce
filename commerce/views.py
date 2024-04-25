@@ -202,19 +202,45 @@ class getUserCartById(ListView): #funciona
 class orderByUser(CreateView):
     def post(self, request, *args, **kwargs):
         data = json.loads(request.body)
-        lengthData = len(data)
         total = 0
-        #print("di data: ", data)
-        #print('userId: ', data[0]['user_code']['id'],  'lengthData: ' , lengthData)
+        userId = data[0]['user_code']['id']
+        user_instance = User.objects.get(id=userId)
 
         for item in data:
             total += Decimal(item['sub_total'])
 
-        Buy.objects.create(user_code=data[0]['user_code']['id'], total_price=total)
-        Buy.save()
+        new_buy = Buy.objects.create(user_code=user_instance, total_price=total)
+        print("New Buy ID:", new_buy.id)
+        product_ids = [item['product_code']['id'] for item in data]
 
-        #buscar una forma de matchear con las filas que contengan el user_code del usuario y el buy_code vacio para meterles el pk creado de la tabla "Buy"
+        for item in data:
+            product_id = item['product_code']['id']
+                
+                # Find the Buy_details with matching user, product, and no existing buy_code
+            buy_detail = Buy_details.objects.filter(
+                user_code=user_instance,
+                product_code_id=product_id,
+                buy_code=None
+            ).first()  # Retrieve the first matching Buy_detail
+                
+            if buy_detail:
+                buy_detail.buy_code = new_buy
+                buy_detail.save()
 
+     # Update Buy_details with the new Buy ID
+       # buy_details_to_update = Buy_details.objects.filter(
+        #    user_code=user_instance,
+        #   product_code_id__in=product_ids,  # Filter for products in the data
+        #    buy_code=None  # Filter for Buy_details instances with empty buy_code
+        #)
+
+        #for buy_detail in buy_details_to_update:
+           # buy_detail.buy_code = new_buy
+           # buy_detail.save()
         
+
+
         return HttpResponse('200')
+
+
     

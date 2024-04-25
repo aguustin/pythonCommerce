@@ -7,10 +7,15 @@ const BuyForm = () => {
 
     const {cartProducts, orderContext} = useContext(ProductsContext);
 
+    const order = (e) => {
+        e.preventDefault();
+        orderContext();
+    }
+
     return(
         <div>
 
-            <form className="buyForm" onSubmit={() =>  orderContext()}>
+            <form className="buyForm" onSubmit={(e) =>  order(e)}>
                 <div>
                     <div className='buyForm-group'>
                         <label className=''>Name of owner</label>
