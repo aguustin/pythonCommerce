@@ -1,12 +1,13 @@
 
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import './home.css';
 import prueba from '../../assets/load-testing-consultant-4-1024x536.jpeg';
 import {Link} from "react-router-dom";
+import ProductsContext from '../../context/productsContext';
 
 const Home = () => {
 
-    const [products, setProducts] = useState([]);
+    const {products, setProducts} = useContext(ProductsContext)
 
     useEffect(() => {
         fetch('https://fakestoreapi.com/products')

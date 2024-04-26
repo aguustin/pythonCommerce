@@ -1,6 +1,9 @@
 import './navigation.css';
 import { Link, useNavigate } from 'react-router-dom';
 import bag from '../../assets/bag.png';
+import menu from '../../assets/menu.png';
+import productRelease from '../../assets/product-release.png';
+import trend from '../../assets/trend.png';
 import logoutImg from '../../assets/log-out.png';
 import cartShops from '../../assets/shopping-trolley.png';
 import { useContext, useEffect, useState } from 'react';
@@ -36,7 +39,6 @@ const Navigation = () => {
         }
     }, [session, setCartProducts]);
 
-    console.log("cart ", cartProducts)
     return(
         <>
             <div className="navigation">
@@ -64,6 +66,18 @@ const Navigation = () => {
                 </div>
                 {session 
                     ?
+                    session.userType == 1 ?
+                    <>
+                        <img className='openMenu' src={menu} alt=""></img>
+                        <div className='menu'>
+                            <input type="checkbox" className="openAdminNav" onClick={() => a()} />
+                            <div className='slide'>
+                                <li><img src={productRelease} alt=""></img><a href="/uploadProductForm">Upload Product</a></li>
+                                <li><img src={trend} alt=""></img><a href="/sales">Sales</a></li>
+                            </div>
+                        </div>
+                    </>
+                    :
                     <>
                         <button className='cartShop' onClick={() => setOpenCart(!openCart)}><img src={cartShops} alt=""></img></button>
                         <button className='logout' onClick={() => logout()}><img src={logoutImg} alt=""></img></button>
@@ -73,10 +87,8 @@ const Navigation = () => {
                         <a href="/account/getIn">Get in</a>
                         <a href="/account/signIn">Sign In</a> 
                     </div>
-                    
                 }
                 {openCart && <Cart/>}
-              
             </div>
         </>
     )

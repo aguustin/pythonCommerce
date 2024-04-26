@@ -214,8 +214,6 @@ class orderByUser(CreateView):
         for item in data:
             product_id = item['product_code']['id']
 
-            print("New Buy ID:", new_buy.id)
-
             # Find the Buy_details with matching user, product, and no existing buy_code
             buy_details = Buy_details.objects.filter(
                 user_code=user_instance,
@@ -227,20 +225,4 @@ class orderByUser(CreateView):
                 buy_detail.buy_code = new_buy
                 buy_detail.save()
 
-     # Update Buy_details with the new Buy ID
-       # buy_details_to_update = Buy_details.objects.filter(
-        #    user_code=user_instance,
-        #   product_code_id__in=product_ids,  # Filter for products in the data
-        #    buy_code=None  # Filter for Buy_details instances with empty buy_code
-        #)
-
-        #for buy_detail in buy_details_to_update:
-           # buy_detail.buy_code = new_buy
-           # buy_detail.save()
-        
-
-
         return HttpResponse('200')
-
-
-    

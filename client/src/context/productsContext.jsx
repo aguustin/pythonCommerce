@@ -6,6 +6,7 @@ const ProductsContext = createContext();
 // eslint-disable-next-line react/prop-types
 export const ProductsContextProvider = ({children}) => {
 
+   const [products, setProducts] = useState([]);
    const [categoryCont, setCategoryCont] = useState([]);
    const [cartProducts, setCartProducts] = useState([]);
    
@@ -32,7 +33,7 @@ export const ProductsContextProvider = ({children}) => {
     }
 
     return(
-        <ProductsContext.Provider value={{categoryCont, setCategoryCont, cartProducts, setCartProducts, addToCartContext, orderContext}}>
+        <ProductsContext.Provider value={{products, setProducts, categoryCont, setCategoryCont, cartProducts, setCartProducts, addToCartContext, orderContext}}>
             {children}
         </ProductsContext.Provider>
 
