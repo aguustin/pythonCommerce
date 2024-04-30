@@ -4,14 +4,14 @@ import './home.css';
 import prueba from '../../assets/load-testing-consultant-4-1024x536.jpeg';
 import {Link} from "react-router-dom";
 import ProductsContext from '../../context/productsContext';
-import { fillDatabaseRequest, getAllProductsRequest } from '../api/productsRequest';
+import { fillDatabaseRequest } from '../api/productsRequest';
 
 const Home = () => {
 
     const {products, setProducts} = useContext(ProductsContext)
 
     useEffect(() => {
-        fetch('http://127.0.0.1:8000/getAllProducts/')
+        fetch('http://127.0.0.1:8000/getAllProducts/') //  fetch('https://fakestoreapi.com/products')
         .then(res=>res.json())
         .then(json=>setProducts(json));
     },[])
@@ -20,6 +20,7 @@ const Home = () => {
     /*useEffect(() => {
         fillDatabaseRequest(products)
     }, [])*/
+    
     return(
         <>
             <div className="home">
