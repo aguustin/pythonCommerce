@@ -12,6 +12,41 @@ from django.core.serializers import serialize
 from commerce.serializers import Buy_detailsSerializer, BuySerializer
 # Create your views here.
 
+class FillDatabase(CreateView):
+    model = Products
+
+    def post(self, request, *args, **kwargs):
+        data = json.loads(request.body)
+        print('datsss: ', data)
+        for product in data:
+            category = product.get('category')
+            productName = product.get('title')
+            description = product.get('description')
+            price = product.get('price')
+            rating_data = product.get('rating', {})
+            quantity = rating_data.get('count')
+            rate = rating_data.get('rate')
+            image = product.get('image')
+            category_code = Categories.objects.filter(category=category)
+
+            category_instance = Categories.objects.get_or_create(category=category)
+
+            # Create the product with the obtained category instance
+            product_data = Products.objects.create(
+                category_code=category_instance, 
+                productName=productName, 
+                description=description, 
+                price=price, 
+                quantity=quantity, 
+                rate=rate, 
+                image=image
+            )
+
+            product_data.save()
+    
+        return HttpResponse('200')
+
+
 class CreateUser(CreateView): #funciona
     model = User
     model = Location

@@ -18,53 +18,58 @@ const UploadProduct = () => {
     const createProduct = (e) => {
         e.preventDefault()
         setCreateProductForm(false)
-       /* fetch('https://fakestoreapi.com/products', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                "id": 100,
-                "title": "New Product",
-                "price": 100,
-                "description": "This is a new product",
-                "category": "electronics",
-                "image": "https://picsum.photos/200/300"
-            })
-        })
-       .then(res=>res.json())*/
+       
+        data = {
+            id: 100,
+            title: "New Product",
+            price: 100,
+            description: "This is a new product",
+            category: "electronics",
+            image: "https://picsum.photos/200/300"  
+        }
     }
 
     return(
         <>
             {createProductForm &&
-                <>   
-                 
+                <> 
+               
+                "productName": post_values.get('title'),
+                "description": post_values.get('description'),
+                "price": post_values.get('price'),
+                "quantity": post_values.get('count'),
+                "image": post_values.get('image'),
                     <div className='back-shadow'></div>
                     <form className='addProductForm' onSubmit={(e) => createProduct(e)}>
                         <div className='add-product-form'>
                             <label>Product title</label>
-                            <input type='text'></input>
+                            <input type='text' name="title"></input>
                         </div>
                         <div className='add-product-form'>
                             <label>Product category</label>
-                            <input type='text'></input>
+                            <select name="category" id="pet-select">
+                                <option value="" selected>--Please choose an option--</option>
+                                <option value="men's clothing">men's clothing</option>
+                                <option value="jewelery">jewelery</option>
+                                <option value="electronics">electronics</option>
+                                <option value="women's clothing">women's clothing</option>
+                            </select>
                         </div>
                         <div className='add-product-form'>
                             <label>Product price</label>
-                            <input type='number'></input>
+                            <input type='number' name="price"></input>
                         </div>
                         <div className='add-product-form'>
                             <label>Product description</label>
-                            <input type='text'></input>
+                            <input type='text' name="description"></input>
                         </div>
                         <div className='add-product-form'>
                             <label>Product image</label>
-                            <input type='file'></input>
+                            <input type='file' name="image"></input>
                         </div>
                         <div className='add-product-form'>
                             <label>Stock:</label>
-                            <input type='number'></input>
+                            <input type='number' name="count"></input>
                         </div>
                         <button type="submit">Upload</button>
                     </form>

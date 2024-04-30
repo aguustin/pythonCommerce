@@ -37,5 +37,6 @@ urlpatterns = [
     path('updateCartInfo/', csrf_exempt(views.UpdateCartInfo.as_view()), name="updateCartInfo"),
     path('order/', csrf_exempt(views.orderByUser.as_view()), name="order"),
     path('deleteAll/', csrf_exempt(views.DeleteAllu.as_view()), name="updateCartInfo"),
+    path('fillDatabase/', csrf_exempt(views.FillDatabase.as_view()), name="fillDatabase")
    # path('GetUserCart/<int:userId>/', views.GetUserInfo.as_view(), name="GetUserCart")
 ]

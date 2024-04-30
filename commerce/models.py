@@ -8,7 +8,7 @@ class Categories(models.Model):
     category = models.CharField(max_length=30)
 
     def __str__(self):
-        return self.category
+        return str(self.id)
     
     def toJSON(self):
         item = model_to_dict(self)
