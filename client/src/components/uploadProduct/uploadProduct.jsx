@@ -3,6 +3,7 @@ import './uploadProduct.css';
 import edit from '../../assets/edit-text.png'
 import ProductsContext from '../../context/productsContext';
 import addProduct from '../../assets/add-button.png';
+import { uploadProductRequest } from '../api/productsRequest';
 
 const UploadProduct = () => {
 
@@ -15,30 +16,26 @@ const UploadProduct = () => {
         .then(json=>setProducts(json));
     },[])
 
-    const createProduct = (e) => {
+    const createProduct = async (e) => {
         e.preventDefault()
         setCreateProductForm(false)
        
-        data = {
-            id: 100,
-            title: "New Product",
-            price: 100,
-            description: "This is a new product",
-            category: "electronics",
-            image: "https://picsum.photos/200/300"  
+        const data = {
+            title: e.target.elements.title.value,
+            price:e.target.elements.price.value,
+            description: e.target.elements.description.value,
+            category: e.target.elements.category.value,
+            quantity: e.target.elements.count.value,
+            image: e.target.elements.image.files[0] 
         }
+    
+        await uploadProductRequest(data)
     }
 
     return(
         <>
             {createProductForm &&
                 <> 
-               
-                "productName": post_values.get('title'),
-                "description": post_values.get('description'),
-                "price": post_values.get('price'),
-                "quantity": post_values.get('count'),
-                "image": post_values.get('image'),
                     <div className='back-shadow'></div>
                     <form className='addProductForm' onSubmit={(e) => createProduct(e)}>
                         <div className='add-product-form'>
