@@ -9,26 +9,28 @@ const UploadProduct = () => {
     const {products, setProducts} = useContext(ProductsContext)
     const [createProductForm, setCreateProductForm] = useState(false)
 
-    useEffect(() => {
+      useEffect(() => {
         fetch('https://fakestoreapi.com/products')
         .then(res=>res.json())
         .then(json=>setProducts(json));
     },[])
 
-    const createProduct = (e) => {
+    const createProduct = async (e) => {
         e.preventDefault()
         setCreateProductForm(false)
        
-        data = {
-            id: 100,
-            title: "New Product",
-            price: 100,
-            description: "This is a new product",
-            category: "electronics",
-            image: "https://picsum.photos/200/300"  
+        const data = {
+            title: e.target.elements.title.value,
+            price:e.target.elements.price.value,
+            description: e.target.elements.description.value,
+            category: e.target.elements.category.value,
+            quantity: e.target.elements.count.value,
+            image: e.target.elements.image.files[0] 
         }
+    
+        await uploadProductRequest(data)
     }
-
+    
     return(
         <>
             {createProductForm &&
