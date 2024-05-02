@@ -15,7 +15,7 @@ import { getUserCartByIdRequest } from '../api/productsRequest';
 const Navigation = () => {
     const navigate = useNavigate();
     const {session, setSession} = useContext(AuthContext);
-    const {cartProducts, setCartProducts} = useContext(ProductsContext);
+    const {/*cartProducts*/ setCartProducts} = useContext(ProductsContext);
     const [openCart, setOpenCart] = useState();
 
     const logout = () => {
@@ -70,7 +70,7 @@ const Navigation = () => {
                     <>
                         <img className='openMenu' src={menu} alt=""></img>
                         <div className='menu'>
-                            <input type="checkbox" className="openAdminNav" onClick={() => a()} />
+                            <input type="checkbox" className="openAdminNav" />
                             <div className='slide'>
                                 <li><img src={productRelease} alt=""></img><a href="/uploadProductForm">Upload Product</a></li>
                                 <li><img src={trend} alt=""></img><a href="/sales">Sales</a></li>

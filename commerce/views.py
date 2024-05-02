@@ -27,9 +27,9 @@ class FillDatabase(CreateView):
             quantity = rating_data.get('count')
             rate = rating_data.get('rate')
             image = product.get('image')
-            category_code = Categories.objects.filter(category=category)
+          
 
-            category_instance = Categories.objects.get_or_create(category=category)
+            category_instance, created = Categories.objects.get_or_create(category=category)
 
             # Create the product with the obtained category instance
             product_data = Products.objects.create(
@@ -123,21 +123,19 @@ class CreateProduct(CreateView):
     model = Products
     model = Categories
 
-        model = User
-    model = Products
-    model = Categories
     def post(self, request, *args, **kwargs):
         post_values = json.loads(request.body)
         category = post_values.get('category')
-        findCategory = Categories.objects.get_or_create(category=category) #esto no funciona
-        #findCategory.save()
-        #print("entro a A: ")
+        findCategory, created = Categories.objects.get_or_create(category=category) #esto no funciona
+    
         data = {
             "category_code": findCategory,
             "productName": post_values.get('title'),
             "description": post_values.get('description'),
             "price": post_values.get('price'),
             "quantity": post_values.get('quantity'),
+            "sales": 0,
+            "rate": 0,
             "image": post_values.get('image'),
         }
            
@@ -145,42 +143,42 @@ class CreateProduct(CreateView):
     
         return HttpResponse(200)
         
-    /*def post(self, request, *args, **kwargs):
-        post_values = request.POST
-        category = request.POST.get('category')
+    #def post(self, request, *args, **kwargs):
+        #post_values = request.POST
+        #category = request.POST.get('category')
 
-        findCategory = Categories.objects.filter(category=category) #esto no funciona
-        #findCategory.save()
+        #findCategory = Categories.objects.filter(category=category) #esto no funciona
+        ##findCategory.save()
 
-        if(findCategory):
-            data = {
-                "category_code": findCategory,
-                "productName": post_values.get('title'),
-                "description": post_values.get('description'),
-                "price": post_values.get('price'),
-                "quantity": post_values.get('count'),
-                "rate": post_values.get('rate'),
-                "image": post_values.get('image'),
-            }
-            Products.objects.create(**data)
+        #if(findCategory):
+            #data = {
+               # "category_code": findCategory,
+               # "productName": post_values.get('title'),
+               # "description": post_values.get('description'),
+               # "price": post_values.get('price'),
+               # "quantity": post_values.get('count'),
+               # "rate": post_values.get('rate'),
+               # "image": post_values.get('image'),
+           # }
+           # Products.objects.create(**data)
       
-            return HttpResponse(200)
-        else:
-            categories = Categories.objects.create(category=category)
-            categories.save()
+           # return HttpResponse(200)
+        #else:
+            #categories = Categories.objects.create(category=category)
+            #categories.save()
 
-            data = {
-                "category_code": categories,
-                "productName": post_values.get('title'),
-                "description": post_values.get('description'),
-                "price": post_values.get('price'),
-                "quantity": post_values.get('count'),
-                "rate": post_values.get('rate'),
-                "image": post_values.get('image'),
-            }
-            Products.objects.create(**data)
+            #data = {
+            #    "category_code": categories,
+           #     "productName": post_values.get('title'),
+            #    "description": post_values.get('description'),
+            #    "price": post_values.get('price'),
+            #    "quantity": post_values.get('count'),
+            #    "rate": post_values.get('rate'),
+            #    "image": post_values.get('image'),
+            #}
+            #Products.objects.create(**data)
 
-            return HttpResponse(200)*/
+            #return HttpResponse(200)*/
 
 
 class UpdateCartInfo(CreateView): #REVISAR TODOO ESTOOOOOOO

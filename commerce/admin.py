@@ -11,6 +11,7 @@ class ProductsAdmin(admin.ModelAdmin):
         'description', 
         'price',
         'quantity',
+        'sales',
         'rate',
         'image'
     ]
