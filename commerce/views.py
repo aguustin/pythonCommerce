@@ -124,21 +124,22 @@ class CreateProduct(CreateView):
     model = Categories
 
     def post(self, request, *args, **kwargs):
-        post_values = json.loads(request.body)
-        category = post_values.get('category')
+        #post_values = json.loads(request.body)
+        category = request.POST.get('category')
         findCategory, created = Categories.objects.get_or_create(category=category) #esto no funciona
-    
+        image_file = request.FILES.get('image')
+        
         data = {
             "category_code": findCategory,
-            "productName": post_values.get('title'),
-            "description": post_values.get('description'),
-            "price": post_values.get('price'),
-            "quantity": post_values.get('quantity'),
+            "productName": request.POST.get('title'),
+            "description": request.POST.get('description'),
+            "price": request.POST.get('price'),
+            "quantity": request.POST.get('quantity'),
             "sales": 0,
             "rate": 0,
-            "image": post_values.get('image'),
+            "image": image_file,
         }
-           
+        print(data)
         Products.objects.create(**data)
     
         return HttpResponse(200)

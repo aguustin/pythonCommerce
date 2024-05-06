@@ -27,19 +27,21 @@ const UploadProduct = () => {
     },[])
 
     const createProduct = async (e) => {
+        const formData = new FormData();
         e.preventDefault()
         setCreateProductForm(false)
-       
-        const data = {
-            title: e.target.elements.title.value,
-            price:e.target.elements.price.value,
-            description: e.target.elements.description.value,
-            category: e.target.elements.category.value,
-            quantity: e.target.elements.count.value,
-            image: e.target.elements.image.files[0] 
-        }
+        const imageFile = e.target.elements.image.files[0];
+        console.log("Image File:", imageFile);
+        //const data = {
+            formData.append("title", e.target.elements.title.value),
+            formData.append("price",e.target.elements.price.value),
+            formData.append("description", e.target.elements.description.value),
+            formData.append("category", e.target.elements.category.value),
+            formData.append("quantity", e.target.elements.count.value),
+            formData.append("image", e.target.elements.image.files[0])
+       // }
     
-        await uploadProductRequest(data)
+        await uploadProductRequest(formData)
     }
     
     return(
