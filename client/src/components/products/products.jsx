@@ -12,7 +12,7 @@ const Products = () => {
     setCategoryCont(category);
     
     useEffect(() => {
-        fetch(`https://fakestoreapi.com/products/category/${category}`)
+        fetch(`http://127.0.0.1:8000/getProductsByCategory/${category}`)// fetch(`https://fakestoreapi.com/products/category/${category}`)
         .then(res=>res.json())
         .then(json=>setProductsByCat(json));
     },[])
@@ -37,7 +37,7 @@ const Products = () => {
                                 return(
                                 <Link key={p.id} to={`/details/${p.id}`} className='goToDetails'>
                                  <div className="card">
-                                        <img src={p.image} className="card-img-top" alt=""/>
+                                        <img src={p.image.url} className="card-img-top" alt=""/>
                                         <div className="card-body">
                                             <h5 className="card-title">{p.title}</h5>
                                             <p className="card-text">{p.description}</p>

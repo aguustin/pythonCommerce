@@ -29,6 +29,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('createUser/', csrf_exempt(views.CreateUser.as_view()), name="createUser"),
     path('getAllProducts/', views.GetAllProducts.as_view()),
+    path('getProductsByCategory/<str:category>/', views.GetProductsByCategory.as_view(), name="getProductsByCategory"),
     path('getAllUsers/', views.GetAllUsers.as_view()),
     path('getAllBuys/', views.getAllBuys.as_view()),
     path('getUserCartById/<int:user_id>/', csrf_exempt(views.getUserCartById.as_view()), name="getUserCartById"),

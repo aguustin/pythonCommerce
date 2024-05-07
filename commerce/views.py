@@ -87,6 +87,17 @@ class GetAllProducts(ListView): #funciona
         data = Products.objects.all().values()
         return JsonResponse(list(data), safe=False)
     
+class GetProductsByCategory(ListView):
+    model = Categories
+    model = Products
+    def get(self, request, *args, **kwargs):
+        categoryName = kwargs.get('category')
+        getCategoryName = Categories.objects.filter(category=categoryName).values()
+        first_id = getCategoryName.first().get('id')
+        print("cat: ", first_id)
+        data = Products.objects.filter(category_code=first_id).values()
+        return JsonResponse(list(data), safe=False)
+       
 
 class GetAllUsers(ListView): #funciona
     model = User
