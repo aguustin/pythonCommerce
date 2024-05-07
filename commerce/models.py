@@ -27,6 +27,7 @@ class Products(models.Model):
     sales = models.IntegerField(null=True, blank=True)
     rate = models.DecimalField(max_digits=2, decimal_places=1, null=True, blank=True)
     image = models.FileField(upload_to='python-commerce')
+ 
     def __str__(self):
         return str(self.id)
 

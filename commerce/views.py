@@ -139,7 +139,7 @@ class CreateProduct(CreateView):
         category = request.POST.get('category')
         findCategory, created = Categories.objects.get_or_create(category=category) #esto no funciona
         image_file = request.FILES.get('image')
-        
+        print("iaagsad: ", image_file)
         data = {
             "category_code": findCategory,
             "productName": request.POST.get('title'),
