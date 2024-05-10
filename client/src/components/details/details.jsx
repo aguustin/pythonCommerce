@@ -9,29 +9,30 @@ import AuthContext from '../../context/authContext';
 
 const Details = () => {
     const {session} = useContext(AuthContext)
-    const {categoryCont, setCartProducts, cartProducts, addToCartContext} = useContext(ProductsContext)
+    const {/*categoryCont,*/ productsByCat, setCartProducts, cartProducts, addToCartContext} = useContext(ProductsContext)
 
-    const [products, setProducts] = useState([]);
+    //const [products,setProducts*/] = useState([]);
     const [details, setDetails] = useState([]);
     const [openPuntuation, setOpenPuntuation] = useState(false);
-    const {id} = useParams();
+    const {/*category,*/ id} = useParams();
     
     useEffect(() => {
 
-        fetch(`https://fakestoreapi.com/products/category/${categoryCont}`)
+        /*fetch(`http://127.0.0.1:8000/getProductsByCategory/${category}`)//fetch(`https://fakestoreapi.com/products/category/${categoryCont}`)
             .then((res) => res.json())
-            .then((json) => setProducts(json))
+            .then((json) => setProducts(json))*/
 
-        fetch(`https://fakestoreapi.com/products/${id}`)
+        fetch(`http://127.0.0.1:8000/getProductById/${id}`)//fetch(`https://fakestoreapi.com/products/${id}`)
             .then((res) => res.json())
-            .then((json) =>setDetails([json]))
+            .then((json) =>setDetails(json))
     // eslint-disable-next-line react-hooks/exhaustive-deps
 
         localStorage.setItem('cartInfo', JSON.stringify(cartProducts));
         setCartProducts(JSON.parse(localStorage.getItem('cartInfo')));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    
+    console.log('details: ', details)
 
     const puntuation = (e, productId, rate) => {
         e.preventDefault();
@@ -72,7 +73,7 @@ const Details = () => {
                         <p>{d.description}</p>
                         <div>
                             <div className='puntuation'>
-                                <label>Puntuation: {d.rating.rate}</label>
+                                <label>Puntuation: {d.rate}</label>
                                 {openPuntuation ? <button onClick={() => setOpenPuntuation(false)}><img src={upArrow} alt=""></img></button> : <button onClick={() => setOpenPuntuation(true)}><img src={downArrow} alt=""></img></button>}
                             </div>
                             <div>
@@ -89,7 +90,7 @@ const Details = () => {
                             }
                             </div>
                             <div>
-                                <button className='addCartButton text-bg-warning' onClick={(e) => addToCart(e, d.id, d.category, d.description, d.image, d.price, d.rating.rate, d.rating.count, d.title)}><p>Add </p><img src={addToCartImg} alt=""></img></button>
+                                <button className='addCartButton text-bg-warning' onClick={(e) => addToCart(e, d.id, d.category, d.description, d.image, d.price, d.rate, d.count, d.title)}><p>Add </p><img src={addToCartImg} alt=""></img></button>
                             </div>
                         </div>
                     </div>
@@ -100,11 +101,17 @@ const Details = () => {
             <h3>Tambien te puede interesar:</h3>
             <div className='products-img-tertiary'>
                 {
-                    products.map((p) => {
+                    productsByCat.map((p) => {
+                        const cloudinaryImg = `https://res.cloudinary.com/drmcrdf4r/image/upload/v1715038215/${p.image}`
                         return(
                             <Link key={p.id} to={`/details/${p.id}`} className='goToDetails'>
                                 <div className="card">
-                                        <img src={p.image} className="card-img-top" alt=""/>
+                                <img src={cloudinaryImg} className="card-img-top" alt=""
+                                    onError={(e) => {
+                                        e.target.onerror = null; // To avoid infinite loop
+                                        e.target.src = p.image; // Use the original image source
+                                    }}
+                                    />
                                         <div className="card-body">
                                             <h5 className="card-title">{p.title}</h5>
                                             <p className="card-text">{p.description}</p>

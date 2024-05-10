@@ -4,7 +4,7 @@ import './home.css';
 import prueba from '../../assets/load-testing-consultant-4-1024x536.jpeg';
 import {Link} from "react-router-dom";
 import ProductsContext from '../../context/productsContext';
-//import { fillDatabaseRequest } from '../api/productsRequest';
+import { fillDatabaseRequest } from '../api/productsRequest';
 
 const Home = () => {
 
@@ -14,12 +14,14 @@ const Home = () => {
         fetch('http://127.0.0.1:8000/getAllProducts/') //  fetch('https://fakestoreapi.com/products')
         .then(res=>res.json())
         .then(json=>setProducts(json));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
     console.log(products);
 
-    /*useEffect(() => {
+    useEffect(() => {
         fillDatabaseRequest(products)
-    }, [])*/
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
     
     return(
         <>

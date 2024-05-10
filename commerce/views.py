@@ -28,7 +28,6 @@ class FillDatabase(CreateView):
             rate = rating_data.get('rate')
             image = product.get('image')
           
-
             category_instance, created = Categories.objects.get_or_create(category=category)
 
             # Create the product with the obtained category instance
@@ -74,7 +73,7 @@ class CreateUser(CreateView): #funciona
 
             PostalCodes = PostalCode.objects.create(postal_number=postal_n)
             PostalCodes.save()
-
+           
             usersData = User.objects.create(location_code=Locations, postal_code=PostalCodes, userType=2, mail=mail, username=username, password=password)
             usersData.save()
 
@@ -98,6 +97,12 @@ class GetProductsByCategory(ListView):
         data = Products.objects.filter(category_code=first_id).values()
         return JsonResponse(list(data), safe=False)
        
+class GetProductById(ListView):
+    model = Products
+    def get(self, request, *args, **kwargs):
+        productId = kwargs.get('id')
+        data = Products.objects.filter(id=productId).values()
+        return JsonResponse(list(data), safe=False)
 
 class GetAllUsers(ListView): #funciona
     model = User
@@ -223,12 +228,13 @@ class UpdateCartInfo(CreateView): #REVISAR TODOO ESTOOOOOOO
             return HttpResponse(200)
         else:
             if(findCategoryById):
+                print('A')
                 catId = findCategoryById[0]['id']
                 category_instance = Categories.objects.get(id=catId)
                 saveProduct = Products.objects.create(category_code=category_instance, productName=getProductName, description=getDescription, price=getPrice, quantity=getQuantity, rate=getRate, image=getImage)
                 saveProduct.save()
                 return HttpResponse(200)
-            else:
+            else: #revisar este error linea 237
                 saveCategory = Categories.objects.create(category=getCategoryName)
                 saveCategory.save()
                 saveProduct = Products.objects.create(category_code=saveCategory.id, productName=getProductName, description=getDescription, price=getPrice, quantity=getQuantity, rate=getRate, image=getImage)
