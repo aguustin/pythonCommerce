@@ -9,9 +9,19 @@ const UploadProduct = () => {
 
     const {products, setProducts} = useContext(ProductsContext)
     const [createProductForm, setCreateProductForm] = useState(false)
+    const [searchTerm, setSearchTerm] = useState('');
+    
+    // Function to filter products based on the search term
+    const filteredProducts = products.filter(product =>
+        new RegExp(searchTerm, 'i').test(product.productName)
+    );
 
-    useEffect(() => {
-        fetch('https://fakestoreapi.com/products')
+    const handleSearchChange = (e) => {
+        setSearchTerm(e.target.value); // Update search term state
+    };
+
+      useEffect(() => {
+        fetch('http://127.0.0.1:8000/getAllProducts/')
         .then(res=>res.json())
         .then(json=>setProducts(json));
     },[])
@@ -31,7 +41,7 @@ const UploadProduct = () => {
     
         await uploadProductRequest(data)
     }
-
+    
     return(
         <>
             {createProductForm &&
@@ -46,10 +56,10 @@ const UploadProduct = () => {
                             <label>Product category</label>
                             <select name="category" id="pet-select">
                                 <option value="" selected>--Please choose an option--</option>
-                                <option value="men's clothing">men's clothing</option>
+                                <option value="men's clothing">mens clothing</option>
                                 <option value="jewelery">jewelery</option>
                                 <option value="electronics">electronics</option>
-                                <option value="women's clothing">women's clothing</option>
+                                <option value="women's clothing">womens clothing</option>
                             </select>
                         </div>
                         <div className='add-product-form'>
@@ -77,7 +87,7 @@ const UploadProduct = () => {
                 <div className='search-add-container'>
                     <form className='search'>
                         <label>Buscar producto</label>
-                        <input type="text" className="form-control" placeholder="" name="search" onChange={() => set} />
+                        <input type="text" className="form-control" placeholder="" name="search" value={searchTerm} onChange={handleSearchChange}/>
                     </form>
                     <div className='add'>
                         <label>Añadir producto</label>
@@ -85,19 +95,19 @@ const UploadProduct = () => {
                     </div>
                 </div>
                 <div className='products-container'>
-                    {products.map((p) => 
+                    {filteredProducts.map((p) => 
                     <div key={p.id} className='product'>
                         <img src={p.image} alt=""></img>
                         <div className='product-info'>
                             <img className='editImg' src={edit} alt=""></img>
-                            <h2>{p.title}</h2>
+                            <h2>{p.productName}</h2>
                             <div className='cat-pri-rate'>
                                 <h3 className='text-success'>{p.category}</h3>
                                 <label className='text-success'>Price: ${p.price}</label>
-                                <label className='lab text-success'>Rate: {p.rating.rate}</label>
+                                <label className='lab text-success'>Rate: {p.rate}</label>
                             </div>
                             <p className='mt-3'>{p.description}</p>
-                            <p className='text-success'>Stock: {p.rating.count}</p>
+                            <p className='text-success'>Stock: {p.quantity}</p>
                         </div>
                     </div>)}
                 </div>

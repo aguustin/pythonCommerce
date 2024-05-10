@@ -25,8 +25,9 @@ class Products(models.Model):
     description = models.CharField(max_length=500)
     price = models.DecimalField(max_digits=6, decimal_places=2, null=False)
     quantity = models.IntegerField()
-    rate = models.DecimalField(max_digits=2, decimal_places=1, null=False)
-    image = models.ImageField(upload_to='productsImages/')
+    sales = models.IntegerField(null=True, blank=True)
+    rate = models.DecimalField(max_digits=2, decimal_places=1, null=True, blank=True)
+    image = models.ImageField(upload_to='python-commerce')
     def __str__(self):
         return str(self.id)
 
