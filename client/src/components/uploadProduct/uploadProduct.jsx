@@ -24,22 +24,25 @@ const UploadProduct = () => {
         fetch('http://127.0.0.1:8000/getAllProducts/')
         .then(res=>res.json())
         .then(json=>setProducts(json));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
     const createProduct = async (e) => {
+        const formData = new FormData();
         e.preventDefault()
         setCreateProductForm(false)
-       
-        const data = {
-            title: e.target.elements.title.value,
-            price:e.target.elements.price.value,
-            description: e.target.elements.description.value,
-            category: e.target.elements.category.value,
-            quantity: e.target.elements.count.value,
-            image: e.target.elements.image.files[0] 
-        }
+        const imageFile = e.target.elements.image.files[0];
+        console.log("Image File:", imageFile);
+        //const data = {
+            formData.append("title", e.target.elements.title.value),
+            formData.append("price",e.target.elements.price.value),
+            formData.append("description", e.target.elements.description.value),
+            formData.append("category", e.target.elements.category.value),
+            formData.append("quantity", e.target.elements.count.value),
+            formData.append("image", e.target.elements.image.files[0])
+       // }
     
-        await uploadProductRequest(data)
+        await uploadProductRequest(formData)
     }
     
     return(
@@ -95,9 +98,16 @@ const UploadProduct = () => {
                     </div>
                 </div>
                 <div className='products-container'>
-                    {filteredProducts.map((p) => 
+                    {filteredProducts.map((p) => {
+                    const cloudinaryImg = `https://res.cloudinary.com/drmcrdf4r/image/upload/v1715038215/${p.image}`
+                    return(
                     <div key={p.id} className='product'>
-                        <img src={p.image} alt=""></img>
+                        <img src={cloudinaryImg} alt=""
+                            onError={(e) => {
+                                e.target.onerror = null; // To avoid infinite loop
+                                e.target.src = p.image; // Use the original image source
+                            }}
+                        />
                         <div className='product-info'>
                             <img className='editImg' src={edit} alt=""></img>
                             <h2>{p.productName}</h2>
@@ -110,6 +120,7 @@ const UploadProduct = () => {
                             <p className='text-success'>Stock: {p.quantity}</p>
                         </div>
                     </div>)}
+                    )}
                 </div>
             
         </>

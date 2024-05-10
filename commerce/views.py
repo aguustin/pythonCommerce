@@ -28,7 +28,6 @@ class FillDatabase(CreateView):
             rate = rating_data.get('rate')
             image = product.get('image')
           
-
             category_instance, created = Categories.objects.get_or_create(category=category)
 
             # Create the product with the obtained category instance
@@ -74,7 +73,7 @@ class CreateUser(CreateView): #funciona
 
             PostalCodes = PostalCode.objects.create(postal_number=postal_n)
             PostalCodes.save()
-
+           
             usersData = User.objects.create(location_code=Locations, postal_code=PostalCodes, userType=2, mail=mail, username=username, password=password)
             usersData.save()
 
@@ -87,6 +86,23 @@ class GetAllProducts(ListView): #funciona
         data = Products.objects.all().values()
         return JsonResponse(list(data), safe=False)
     
+class GetProductsByCategory(ListView):
+    model = Categories
+    model = Products
+    def get(self, request, *args, **kwargs):
+        categoryName = kwargs.get('category')
+        getCategoryName = Categories.objects.filter(category=categoryName).values()
+        first_id = getCategoryName.first().get('id')
+        print("cat: ", first_id)
+        data = Products.objects.filter(category_code=first_id).values()
+        return JsonResponse(list(data), safe=False)
+       
+class GetProductById(ListView):
+    model = Products
+    def get(self, request, *args, **kwargs):
+        productId = kwargs.get('id')
+        data = Products.objects.filter(id=productId).values()
+        return JsonResponse(list(data), safe=False)
 
 class GetAllUsers(ListView): #funciona
     model = User
@@ -124,27 +140,30 @@ class CreateProduct(CreateView):
     model = Categories
 
     def post(self, request, *args, **kwargs):
+
         post_values = json.loads(request.body)
         category = post_values.get('category')
 
         findCategory = Categories.objects.get_or_create(category=category) #esto no funciona
         #findCategory.save()
         #print("entro a A: ")
-
         findCategory, created = Categories.objects.get_or_create(category=category) #esto no funciona
-    
+        #post_values = json.loads(request.body)
+        category = request.POST.get('category')
+        findCategory, created = Categories.objects.get_or_create(category=category) #esto no funciona
+        image_file = request.FILES.get('image')
 
         data = {
             "category_code": findCategory,
-            "productName": post_values.get('title'),
-            "description": post_values.get('description'),
-            "price": post_values.get('price'),
-            "quantity": post_values.get('quantity'),
+            "productName": request.POST.get('title'),
+            "description": request.POST.get('description'),
+            "price": request.POST.get('price'),
+            "quantity": request.POST.get('quantity'),
             "sales": 0,
             "rate": 0,
-            "image": post_values.get('image'),
+            "image": image_file,
         }
-           
+        print(data)
         Products.objects.create(**data)
     
         return HttpResponse(200)
@@ -194,7 +213,6 @@ class UpdateCartInfo(CreateView): #REVISAR TODOO ESTOOOOOOO
     def post(self, request, *args, **kwargs):
         data = json.loads(request.body)
         getUserId = data.get('userId')
-        getProductId = data.get('productId')
         getCategoryName = data.get('productCategory')
         getProductName = data.get('productTitle')
         getDescription = data.get('productDescription')
@@ -202,11 +220,10 @@ class UpdateCartInfo(CreateView): #REVISAR TODOO ESTOOOOOOO
         getQuantity = data.get('productQuantity')
         getRate = data.get('productRate')
         getImage = data.get('productImage')
-
         findUserById = list(User.objects.filter(pk=getUserId).values())
         findProductById = list(Products.objects.filter(productName=getProductName).values())
-        findCategoryById = list(Categories.objects.filter(category=getCategoryName).values())
-      
+        findCategoryById = list(Categories.objects.filter(pk=getCategoryName).values())
+        print('title: ', data)
         if(findProductById):
             userId = findUserById[0]['id']
             user_instance = User.objects.get(id=userId)
@@ -217,12 +234,13 @@ class UpdateCartInfo(CreateView): #REVISAR TODOO ESTOOOOOOO
             return HttpResponse(200)
         else:
             if(findCategoryById):
+                print('A')
                 catId = findCategoryById[0]['id']
                 category_instance = Categories.objects.get(id=catId)
                 saveProduct = Products.objects.create(category_code=category_instance, productName=getProductName, description=getDescription, price=getPrice, quantity=getQuantity, rate=getRate, image=getImage)
                 saveProduct.save()
                 return HttpResponse(200)
-            else:
+            else: #revisar este error linea 237
                 saveCategory = Categories.objects.create(category=getCategoryName)
                 saveCategory.save()
                 saveProduct = Products.objects.create(category_code=saveCategory.id, productName=getProductName, description=getDescription, price=getPrice, quantity=getQuantity, rate=getRate, image=getImage)
@@ -264,9 +282,15 @@ class getUserCartById(ListView): #funciona
 class orderByUser(CreateView):
     def post(self, request, *args, **kwargs):
         data = json.loads(request.body)
+        print(data)
         total = 0
         userId = data[0]['user_code']['id']
+        productId = data[0]['product_code']['id']
+        #productQuantity = data[0]['product_code']['quantity']
         user_instance = User.objects.get(id=userId)
+        product_instance = Products.objects.get(id=productId)
+        product_instance.quantity - 10
+        product_instance.save(update_fields=['quantity'])
 
         for item in data:
             total += Decimal(item['sub_total'])

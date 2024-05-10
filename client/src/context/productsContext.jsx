@@ -8,8 +8,8 @@ export const ProductsContextProvider = ({children}) => {
 
    const [products, setProducts] = useState([]);
    const [categoryCont, setCategoryCont] = useState([]);
+   const [productsByCat, setProductsByCat] = useState([]);
    const [cartProducts, setCartProducts] = useState([]);
-   
 
     /*useEffect(() => {
         const res = fetch('https://fakestoreapi.com/products')
@@ -33,7 +33,7 @@ export const ProductsContextProvider = ({children}) => {
     }
 
     return(
-        <ProductsContext.Provider value={{products, setProducts, categoryCont, setCategoryCont, cartProducts, setCartProducts, addToCartContext, orderContext}}>
+        <ProductsContext.Provider value={{products, setProducts, productsByCat, setProductsByCat, categoryCont, setCategoryCont, cartProducts, setCartProducts, addToCartContext, orderContext}}>
             {children}
         </ProductsContext.Provider>
 

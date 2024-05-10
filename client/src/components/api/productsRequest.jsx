@@ -4,6 +4,8 @@ export const uploadProductRequest = (data) => axios.post('http://127.0.0.1:8000/
 
 export const getAllProductsRequest = () => axios.get('http://127.0.0.1:8000/getAllProducts/');
 
+export const getProductsByCategoryRequest = (category) => axios.get(`http://127.0.0.1:8000/getProductsByCategory/${category}`);
+
 export const addToCartRequest = (data) => axios.post('http://127.0.0.1:8000/updateCartInfo/', data);
 
 export const getUserCartByIdRequest = (userId) => axios.get(`http://127.0.0.1:8000/getUserCartById/${userId}`);

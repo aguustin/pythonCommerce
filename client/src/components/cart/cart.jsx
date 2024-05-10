@@ -8,7 +8,7 @@ const Cart = () => {
 
     //const {session} = useContext(AuthContext);
     const {cartProducts} = useContext(ProductsContext);
-    
+
     return(
         <>
             <div className="cart">

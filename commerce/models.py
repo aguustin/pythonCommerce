@@ -1,7 +1,7 @@
 from django.db import models
 from django.forms import model_to_dict
 from storeapi import settings
-
+from cloudinary.models import CloudinaryField
 # Create your models here.
 
 class Categories(models.Model):
@@ -18,7 +18,6 @@ class Categories(models.Model):
         db_table = 'Categories'
         ordering = ['id']
 
-
 class Products(models.Model):
     category_code = models.ForeignKey(Categories, on_delete=models.CASCADE, default="")
     productName = models.CharField(max_length=100)
@@ -27,7 +26,9 @@ class Products(models.Model):
     quantity = models.IntegerField()
     sales = models.IntegerField(null=True, blank=True)
     rate = models.DecimalField(max_digits=2, decimal_places=1, null=True, blank=True)
-    image = models.ImageField(upload_to='python-commerce')
+    image = models.FileField(upload_to='python-commerce')
+    
+ 
     def __str__(self):
         return str(self.id)
 
@@ -42,7 +43,6 @@ class Products(models.Model):
     class Meta:
         db_table = 'Products'
         ordering = ['id']
-
 
 class Location(models.Model):
     country = models.CharField(max_length=30)
