@@ -11,10 +11,10 @@ const Details = () => {
     const {session} = useContext(AuthContext)
     const {/*categoryCont,*/ productsByCat, setCartProducts, cartProducts, addToCartContext} = useContext(ProductsContext)
 
-    //const [products,setProducts*/] = useState([]);
     const [details, setDetails] = useState([]);
     const [openPuntuation, setOpenPuntuation] = useState(false);
-    const {/*category,*/ id} = useParams();
+    const [sales, setSales] = useState(1);
+    const {id} = useParams();
     
     useEffect(() => {
 
@@ -24,7 +24,7 @@ const Details = () => {
 
         fetch(`http://127.0.0.1:8000/getProductById/${id}`)//fetch(`https://fakestoreapi.com/products/${id}`)
             .then((res) => res.json())
-            .then((json) =>setDetails(json))
+            .then((json) =>setDetails([json]))
     // eslint-disable-next-line react-hooks/exhaustive-deps
 
         localStorage.setItem('cartInfo', JSON.stringify(cartProducts));
@@ -39,18 +39,36 @@ const Details = () => {
         console.log(productId, " ", rate);
     }
 
-    const addToCart = (e, productId, productCategory, productDescription, productImage, productPrice, productRate, productCount, productTitle) => {
+    const rest = () => {
+        if(sales === 1){
+            setSales(1)
+        }else{
+            setSales(sales - 1)
+        }
+    }
+
+    const sum = () => {
+        if(sales < details[0].quantity){
+            setSales(sales + 1)
+        }else{
+            setSales(details[0].quantity)
+        }
+    }
+
+    const addToCart = (e, productId, productCategoryName, productDescription, productImage, productPrice, productRate, productQuantity, productTitle) => {
         e.preventDefault();
+       
         const data = {
             userId: session.id,
             productId: productId,
-            productCategory: productCategory,
+            productCategoryName: productCategoryName,
             productDescription: productDescription,
             productImage: productImage,
             productPrice: productPrice,
             productRate: productRate,
-            productQuantity: productCount,
+            productQuantity: productQuantity,
             productTitle: productTitle,
+            productSales: sales
         }
 
         console.log("add: ", data);
@@ -60,6 +78,7 @@ const Details = () => {
     }
 
     return (
+        
         <>
         <div className="details">
             {details.map((d) => 
@@ -68,7 +87,7 @@ const Details = () => {
                         <img src={d.image} alt=""></img>
                     </div>
                     <div className='details-info'>
-                        <h3>{d.title}</h3>
+                        <h3>{d.productName}</h3>
                         <h2 className='text-success'>${d.price}</h2>
                         <p>{d.description}</p>
                         <div>
@@ -90,7 +109,14 @@ const Details = () => {
                             }
                             </div>
                             <div>
-                                <button className='addCartButton text-bg-warning' onClick={(e) => addToCart(e, d.id, d.category, d.description, d.image, d.price, d.rate, d.count, d.title)}><p>Add </p><img src={addToCartImg} alt=""></img></button>
+                                <div>
+                                    <button type="button" className="btn btn-success" onClick={(e) => rest(e)}>-</button>
+                                    <label>{sales}</label>
+                                    <button type="button" className="btn btn-success" onClick={(e) => sum(e)}>+</button>
+                                </div>
+                                <div>
+                                    <button className='addCartButton text-bg-warning' onClick={(e) => addToCart(e, d.id, d.category_code.category, d.description, d.image, d.price, d.rate, d.quantity, d.productName, sales)}><p>Add </p><img src={addToCartImg} alt=""></img></button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -125,7 +151,9 @@ const Details = () => {
             </div>
         </div>
         </>
+        
     );
+    
 }
 
 export default Details;

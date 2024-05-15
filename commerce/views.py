@@ -9,7 +9,7 @@ from commerce.models import Buy, Buy_details, Categories, Location, PostalCode, 
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.core.serializers import serialize
 
-from commerce.serializers import Buy_detailsSerializer, BuySerializer
+from commerce.serializers import Buy_detailsSerializer, BuySerializer, ProductsSerializer
 # Create your views here.
 
 class FillDatabase(CreateView):
@@ -101,8 +101,10 @@ class GetProductById(ListView):
     model = Products
     def get(self, request, *args, **kwargs):
         productId = kwargs.get('id')
-        data = Products.objects.filter(id=productId).values()
-        return JsonResponse(list(data), safe=False)
+        data = Products.objects.select_related('category_code').get(id=productId)
+        serializer = ProductsSerializer(data)
+        print('serializer: ', serializer.data)
+        return JsonResponse(serializer.data)
 
 class GetAllUsers(ListView): #funciona
     model = User
@@ -144,7 +146,6 @@ class CreateProduct(CreateView):
         category = request.POST.get('category')
         findCategory, created = Categories.objects.get_or_create(category=category) #esto no funciona
         image_file = request.FILES.get('image')
-        print("iaagsad: ", image_file)
         data = {
             "category_code": findCategory,
             "productName": request.POST.get('title'),
@@ -160,43 +161,6 @@ class CreateProduct(CreateView):
     
         return HttpResponse(200)
         
-    #def post(self, request, *args, **kwargs):
-        #post_values = request.POST
-        #category = request.POST.get('category')
-
-        #findCategory = Categories.objects.filter(category=category) #esto no funciona
-        ##findCategory.save()
-
-        #if(findCategory):
-            #data = {
-               # "category_code": findCategory,
-               # "productName": post_values.get('title'),
-               # "description": post_values.get('description'),
-               # "price": post_values.get('price'),
-               # "quantity": post_values.get('count'),
-               # "rate": post_values.get('rate'),
-               # "image": post_values.get('image'),
-           # }
-           # Products.objects.create(**data)
-      
-           # return HttpResponse(200)
-        #else:
-            #categories = Categories.objects.create(category=category)
-            #categories.save()
-
-            #data = {
-            #    "category_code": categories,
-           #     "productName": post_values.get('title'),
-            #    "description": post_values.get('description'),
-            #    "price": post_values.get('price'),
-            #    "quantity": post_values.get('count'),
-            #    "rate": post_values.get('rate'),
-            #    "image": post_values.get('image'),
-            #}
-            #Products.objects.create(**data)
-
-            #return HttpResponse(200)*/
-
 
 class UpdateCartInfo(CreateView): #REVISAR TODOO ESTOOOOOOO
     model = User
@@ -206,13 +170,17 @@ class UpdateCartInfo(CreateView): #REVISAR TODOO ESTOOOOOOO
         data = json.loads(request.body)
         getUserId = data.get('userId')
         getProductId = data.get('productId')
-        getCategoryName = data.get('productCategory')
+        getCategoryName = data.get('productCategoryName')
+        print('category name ', getCategoryName)
         getProductName = data.get('productTitle')
         getDescription = data.get('productDescription')
         getPrice = data.get('productPrice')
         getQuantity = data.get('productQuantity')
         getRate = data.get('productRate')
         getImage = data.get('productImage')
+        getSales = data.get('productSales') 
+
+        actualQuantity = getQuantity - getSales 
 
         findUserById = list(User.objects.filter(pk=getUserId).values())
         findProductById = list(Products.objects.filter(productName=getProductName).values())
@@ -225,16 +193,20 @@ class UpdateCartInfo(CreateView): #REVISAR TODOO ESTOOOOOOO
             prod_instance = Products.objects.get(id=prodId)
             buy = Buy_details.objects.create(user_code=user_instance, product_code=prod_instance, sub_total=getPrice, buy_date=timezone.now())
             buy.save()
+            prod_instance.quantity = actualQuantity 
+            prod_instance.sales = getSales 
+            prod_instance.save(update_fields=['quantity', 'sales']) 
             return HttpResponse(200)
         else:
             if(findCategoryById):
-                print('A')
+
                 catId = findCategoryById[0]['id']
                 category_instance = Categories.objects.get(id=catId)
                 saveProduct = Products.objects.create(category_code=category_instance, productName=getProductName, description=getDescription, price=getPrice, quantity=getQuantity, rate=getRate, image=getImage)
                 saveProduct.save()
                 return HttpResponse(200)
-            else: #revisar este error linea 237
+            else: 
+                print('B')
                 saveCategory = Categories.objects.create(category=getCategoryName)
                 saveCategory.save()
                 saveProduct = Products.objects.create(category_code=saveCategory.id, productName=getProductName, description=getDescription, price=getPrice, quantity=getQuantity, rate=getRate, image=getImage)
