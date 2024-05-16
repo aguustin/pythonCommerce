@@ -13,3 +13,5 @@ export const getUserCartByIdRequest = (userId) => axios.get(`http://127.0.0.1:80
 export const orderRequest = (serializeCartProducts) => axios.post('http://127.0.0.1:8000/order/', serializeCartProducts);
 
 export const fillDatabaseRequest = (product) => axios.post('http://127.0.0.1:8000/fillDatabase/', product);
+
+export const updateProductRequest = (product) => axios.post('http://127.0.0.1:8000/updateProduct/', product);

@@ -10,7 +10,8 @@ export const ProductsContextProvider = ({children}) => {
    const [categoryCont, setCategoryCont] = useState([]);
    const [productsByCat, setProductsByCat] = useState([]);
    const [cartProducts, setCartProducts] = useState([]);
-
+   const [visibleForm, setVisibleForm] = useState(false)
+   const [updateForm, setUpdateForm] = useState()
     /*useEffect(() => {
         const res = fetch('https://fakestoreapi.com/products')
         .then(res=>res.json())
@@ -32,8 +33,24 @@ export const ProductsContextProvider = ({children}) => {
         console.log(cartProducts)
     }
 
+    const handleProductNameContext = async (name) => {
+        setUpdateForm([{ ...updateForm[0], productName: name }]);
+    }
+    const handleProductDescriptionContext = async (description) => {
+        setUpdateForm([{ ...updateForm[0], description: description }]);
+    }
+    const handleProductPriceContext = async (price) => {
+        setUpdateForm([{ ...updateForm[0], price: price }]);
+    }
+    const handleProductQuantityContext = async (quantity) => {
+        setUpdateForm([{ ...updateForm[0], quantity: quantity }]);
+    }
+    const handleProductCategoryContext = async (category) => {
+        setUpdateForm([{...updateForm[0], category_code_id: category }]);
+    }
+
     return(
-        <ProductsContext.Provider value={{products, setProducts, productsByCat, setProductsByCat, categoryCont, setCategoryCont, cartProducts, setCartProducts, addToCartContext, orderContext}}>
+        <ProductsContext.Provider value={{products, setProducts, productsByCat, setProductsByCat, categoryCont, setCategoryCont, cartProducts, setCartProducts, visibleForm, setVisibleForm, updateForm, setUpdateForm, addToCartContext, orderContext, handleProductNameContext, handleProductDescriptionContext, handleProductPriceContext, handleProductQuantityContext, handleProductCategoryContext }}>
             {children}
         </ProductsContext.Provider>
 

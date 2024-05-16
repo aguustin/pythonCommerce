@@ -160,6 +160,34 @@ class CreateProduct(CreateView):
         Products.objects.create(**data)
     
         return HttpResponse(200)
+    
+class updateProduct(CreateView):  #seguir aca, hay que actualizar el producto encontrando el category_id mediante el nombre de la categoria en el modelo Categories y de ahi updatear el modelo productos con dicho id y los demas valores
+    def post(self, request, *args, **kwargs):
+        data = json.loads(request.body)
+        print("update form: ", data)
+        category = data[0].get('category_code_id')
+        productId = data[0].get('id')
+        product_instance = Products.objects.get(id=productId)
+        category_instance_name = Categories.objects.get(category=category)
+        print('category: ', category_instance_name)
+        if(category_instance_name):
+            print('entro en categoria por nombre')
+            product_instance.category_code = category_instance_name
+            product_instance.productName = data[0].get('productName')
+            product_instance.description = data[0].get('description')
+            product_instance.price = data[0].get('price')
+            product_instance.quantity = data[0].get('quantity')
+            product_instance.save(update_fields=['category_code', 'productName', 'description', 'price', 'quantity'])
+            return HttpResponse(200)
+        #else:
+           # print('entro en categoria por id') 
+            #product_instance.category_code = category_instance_id
+            #product_instance.productName = data[0].get('productName')
+            #product_instance.description = data[0].get('description')
+            #product_instance.price = data[0].get('price')
+            #product_instance.quantity = data[0].get('quantity')
+            #product_instance.save(update_fields=['category_code', 'productName', 'description', 'price', 'quantity'])
+            #return HttpResponse(200)
         
 
 class UpdateCartInfo(CreateView): #REVISAR TODOO ESTOOOOOOO
@@ -222,14 +250,20 @@ class DeleteAllu(DeleteView): #funciona
         Location.objects.all().delete()
         PostalCode.objects.all().delete()
         return HttpResponse(200)
-        
+    
 class DeleteProduct(DeleteView): #funciona
+    model = User
+    def delete(self, request, *args, **kwargs):
+        productId = kwargs.get('productId')
+        Products.objects.filter(id=productId).delete()
+        return HttpResponse(200)
+        
+class DeleteProductOnCart(DeleteView): #funciona
     model = User
     def delete(self, request, *args, **kwargs):
         productId = request.POST.get('productId')
         User.objects.filter(product_id=productId).delete()
         return HttpResponse(200)
-    
 
 class getAllBuys(ListView): #funciona
     model = Buy_details

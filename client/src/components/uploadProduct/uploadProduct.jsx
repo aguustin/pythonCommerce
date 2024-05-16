@@ -1,17 +1,18 @@
 import { useContext, useEffect, useState } from 'react';
 import './uploadProduct.css';
 import edit from '../../assets/edit-text.png'
+import forbidden from '../../assets/forbidden.png';
 import ProductsContext from '../../context/productsContext';
 import addProduct from '../../assets/add-button.png';
 import { uploadProductRequest } from '../api/productsRequest';
+import UpdateProductForm from '../../updateForm/updateForm';
 
 const UploadProduct = () => {
 
-    const {products, setProducts} = useContext(ProductsContext)
+    const {products, setProducts, updateForm, setUpdateForm, visibleForm, setVisibleForm} = useContext(ProductsContext)
     const [createProductForm, setCreateProductForm] = useState(false)
     const [searchTerm, setSearchTerm] = useState('');
-    
-    // Function to filter products based on the search term
+ 
     const filteredProducts = products.filter(product =>
         new RegExp(searchTerm, 'i').test(product.productName)
     );
@@ -44,12 +45,30 @@ const UploadProduct = () => {
     
         await uploadProductRequest(formData)
     }
+
+    const deleteProduct = async (e, productId) => {
+        e.preventDefault();
+        const id = productId;
+        await fetch(`http://127.0.0.1:8000/deleteProduct/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        
+        setProducts(products.filter(product => product.id!== id));
+    }
+
+    const openUpdateForm = (productId) => {
+        setVisibleForm(true);
+        setUpdateForm(products.filter(product => product.id === productId))
+    }
+    console.log(updateForm);
     
     return(
         <>
             {createProductForm &&
                 <> 
-               
                     <div className='back-shadow'></div>
                     <form className='addProductForm' onSubmit={(e) => createProduct(e)}>
                         <div className='add-product-form'>
@@ -86,7 +105,7 @@ const UploadProduct = () => {
                     </form>
             </>
             }
-               
+            {visibleForm && <UpdateProductForm/>}
                 <h1>Products</h1>
                 <div className='search-add-container'>
                     <form className='search'>
@@ -110,7 +129,8 @@ const UploadProduct = () => {
                             }}
                         />
                         <div className='product-info'>
-                            <img className='editImg' src={edit} alt=""></img>
+                            <button onClick={() => openUpdateForm(p.id)}><img className='editImg' src={edit} alt=""></img></button>
+                            <button onClick={(e) => deleteProduct(e, p.id)}><img src={forbidden} alt=""></img></button>
                             <h2>{p.productName}</h2>
                             <div className='cat-pri-rate'>
                                 <h3 className='text-success'>{p.category}</h3>
