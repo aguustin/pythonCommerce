@@ -4,12 +4,19 @@ import { updateProductRequest } from "../components/api/productsRequest"
 
 const UpdateProductForm = () => {
     const {updateForm, handleProductNameContext, handleProductDescriptionContext, handleProductPriceContext, handleProductQuantityContext, handleProductCategoryContext} = useContext(ProductsContext)
+    const previousStock = updateForm[0].quantity
 
     const updateProduct = async (e) => {
         e.preventDefault();
-        console.log(updateForm)
-        await updateProductRequest(updateForm)
-        window.location.reload();
+        const pfs = e.target.elements.pfs.value;
+        if(previousStock === updateForm[0].quantity){
+            await updateProductRequest(updateForm, pfs, '')
+            window.location.reload();
+        }else{
+            const calculatePreviousStock = updateForm[0].quantity - previousStock;
+            await updateProductRequest(updateForm, pfs, calculatePreviousStock)
+            window.location.reload();
+        }
     }
     const handleProductName = (e) => {
         handleProductNameContext(e.target.value)
@@ -57,6 +64,10 @@ const UpdateProductForm = () => {
             <div className='add-product-form'>
                 <label>Stock:</label>
                 <input type='number' name="count" value={updateForm[0].quantity} onChange={handleProductQuantity}></input>
+            </div>
+            <div className='add-product-form'>
+                <label>Price for stock:</label>
+                <input type='number' name="pfs"></input>
             </div>
             <button type="submit">Update</button>
         </form>

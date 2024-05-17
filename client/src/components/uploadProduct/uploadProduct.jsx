@@ -41,9 +41,11 @@ const UploadProduct = () => {
             formData.append("category", e.target.elements.category.value),
             formData.append("quantity", e.target.elements.count.value),
             formData.append("image", e.target.elements.image.files[0])
+            formData.append("profits", e.target.elements.profits.value)
        // }
     
         await uploadProductRequest(formData)
+        window.location.reload();
     }
 
     const deleteProduct = async (e, productId) => {
@@ -100,6 +102,10 @@ const UploadProduct = () => {
                         <div className='add-product-form'>
                             <label>Stock:</label>
                             <input type='number' name="count"></input>
+                        </div>
+                        <div className='add-product-form'>
+                            <label>Price for stock:</label>
+                            <input type='number' name="profits"></input>
                         </div>
                         <button type="submit">Upload</button>
                     </form>

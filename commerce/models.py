@@ -25,6 +25,8 @@ class Products(models.Model):
     price = models.DecimalField(max_digits=6, decimal_places=2, null=False)
     quantity = models.IntegerField()
     sales = models.IntegerField(null=True, blank=True)
+    profits = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True)
+    losses = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True)
     rate = models.DecimalField(max_digits=2, decimal_places=1, null=True, blank=True)
     image = models.FileField(upload_to='python-commerce')
     
@@ -37,6 +39,8 @@ class Products(models.Model):
         item['category_code'] = self.category_code.toJSON()
         item['price'] = format(self.price, '.2f')
         item['rate'] = format(self.rate, '.1f')
+        item['profits'] = format(self.profits, '.3f')
+        item['losses'] = format(self.losses, '.3f')
         item['image'] = self.get_image()
         return item
     

@@ -53,7 +53,6 @@ class CreateUser(CreateView): #funciona
    
     def post(self, request, *args, **kwargs):
         data = json.loads(request.body)
-        #userType = data.get('userType')
         mail = data.get('mail')
         username = data.get('username')
         password = data.get('password')
@@ -146,14 +145,22 @@ class CreateProduct(CreateView):
         category = request.POST.get('category')
         findCategory, created = Categories.objects.get_or_create(category=category) #esto no funciona
         image_file = request.FILES.get('image')
+        stock = Decimal(request.POST.get('quantity').replace(',','.'))
+        profits = Decimal(request.POST.get('profits').replace(',','.'))
+        
+        print('profits ', profits, " ", "stock: ", stock)
+        losses = (stock * profits)
+
         data = {
             "category_code": findCategory,
             "productName": request.POST.get('title'),
             "description": request.POST.get('description'),
             "price": request.POST.get('price'),
-            "quantity": request.POST.get('quantity'),
+            "quantity": stock,
             "sales": 0,
-            "rate": 0,
+            "profits": 0,
+            "losses": losses,
+            "rate": 1,
             "image": image_file,
         }
         print(data)
@@ -161,10 +168,12 @@ class CreateProduct(CreateView):
     
         return HttpResponse(200)
     
-class updateProduct(CreateView):  #seguir aca, hay que actualizar el producto encontrando el category_id mediante el nombre de la categoria en el modelo Categories y de ahi updatear el modelo productos con dicho id y los demas valores
+class updateProduct(CreateView):  
     def post(self, request, *args, **kwargs):
         data = json.loads(request.body)
         print("update form: ", data)
+        print("the pfs: ", request.POST.get('pfs')) #traer esto para meterlo en profits
+        print("previous calculate", request.POST.get('calculatePreviousStock')) #trae esto para restarselo al stock y la diferencia sumarsela a lo que ya esta en losses
         category = data[0].get('category_code_id')
         productId = data[0].get('id')
         product_instance = Products.objects.get(id=productId)
@@ -177,20 +186,12 @@ class updateProduct(CreateView):  #seguir aca, hay que actualizar el producto en
             product_instance.description = data[0].get('description')
             product_instance.price = data[0].get('price')
             product_instance.quantity = data[0].get('quantity')
+            
             product_instance.save(update_fields=['category_code', 'productName', 'description', 'price', 'quantity'])
             return HttpResponse(200)
-        #else:
-           # print('entro en categoria por id') 
-            #product_instance.category_code = category_instance_id
-            #product_instance.productName = data[0].get('productName')
-            #product_instance.description = data[0].get('description')
-            #product_instance.price = data[0].get('price')
-            #product_instance.quantity = data[0].get('quantity')
-            #product_instance.save(update_fields=['category_code', 'productName', 'description', 'price', 'quantity'])
-            #return HttpResponse(200)
         
 
-class UpdateCartInfo(CreateView): #REVISAR TODOO ESTOOOOOOO
+class UpdateCartInfo(CreateView): 
     model = User
     model = Products
     model = Buy_details

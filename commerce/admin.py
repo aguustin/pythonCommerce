@@ -12,6 +12,8 @@ class ProductsAdmin(admin.ModelAdmin):
         'price',
         'quantity',
         'sales',
+        'profits',
+        'losses',
         'rate',
         'image'
     ]
