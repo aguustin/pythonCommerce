@@ -9,7 +9,7 @@ import UpdateProductForm from '../../updateForm/updateForm';
 
 const UploadProduct = () => {
 
-    const {products, setProducts, updateForm, setUpdateForm, visibleForm, setVisibleForm} = useContext(ProductsContext)
+    const {products, setProducts, setUpdateForm, setPreviousStock, visibleForm, setVisibleForm} = useContext(ProductsContext)
     const [createProductForm, setCreateProductForm] = useState(false)
     const [searchTerm, setSearchTerm] = useState('');
  
@@ -63,9 +63,10 @@ const UploadProduct = () => {
 
     const openUpdateForm = (productId) => {
         setVisibleForm(true);
+        setPreviousStock(products.filter(product => product.id === productId))
         setUpdateForm(products.filter(product => product.id === productId))
     }
-    console.log(updateForm);
+   
     
     return(
         <>

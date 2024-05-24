@@ -3,18 +3,18 @@ import ProductsContext from "../context/productsContext"
 import { updateProductRequest } from "../components/api/productsRequest"
 
 const UpdateProductForm = () => {
-    const {updateForm, handleProductNameContext, handleProductDescriptionContext, handleProductPriceContext, handleProductQuantityContext, handleProductCategoryContext} = useContext(ProductsContext)
-    const previousStock = updateForm[0].quantity
-
+    const {updateForm, previousStock, handleProductNameContext, handleProductDescriptionContext, handleProductPriceContext, handleProductQuantityContext, handleProductCategoryContext} = useContext(ProductsContext)
+    
     const updateProduct = async (e) => {
         e.preventDefault();
-        const pfs = e.target.elements.pfs.value;
-        if(previousStock === updateForm[0].quantity){
-            await updateProductRequest(updateForm, pfs, '')
+        if(previousStock[0].quantity === updateForm[0].quantity){
+            await updateProductRequest(updateForm[0], null, null)
             window.location.reload();
-        }else{
-            const calculatePreviousStock = updateForm[0].quantity - previousStock;
-            await updateProductRequest(updateForm, pfs, calculatePreviousStock)
+        }else if(previousStock[0].quantity < updateForm[0].quantity){
+            const calculateNewStock = (updateForm[0].quantity - previousStock[0].quantity) 
+            const pfs = e.target.elements.pfs.value * calculateNewStock;
+            console.log(pfs);
+            await updateProductRequest(updateForm[0], pfs, updateForm[0].quantity)
             window.location.reload();
         }
     }
@@ -63,7 +63,7 @@ const UpdateProductForm = () => {
             </div>
             <div className='add-product-form'>
                 <label>Stock:</label>
-                <input type='number' name="count" value={updateForm[0].quantity} onChange={handleProductQuantity}></input>
+                <input type='number' name="quantity" value={updateForm[0].quantity} onChange={handleProductQuantity}></input>
             </div>
             <div className='add-product-form'>
                 <label>Price for stock:</label>

@@ -23,7 +23,7 @@ const Navigation = () => {
         setSession(null);
         navigate('/');
     }
-   console.log("sesssadas: ", session)
+   
     useEffect(() => {
         // Check if session exists before fetching cart data
         if(session) {

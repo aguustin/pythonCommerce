@@ -70,7 +70,7 @@ const Details = () => {
             productTitle: productTitle,
             productSales: sales
         }
-
+        
         console.log("add: ", data);
 
         addToCartContext(data);

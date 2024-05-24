@@ -11,7 +11,7 @@ const Home = () => {
     const {products, setProducts} = useContext(ProductsContext)
 
     useEffect(() => {
-        fetch('http://127.0.0.1:8000/getAllProducts/') //  fetch('https://fakestoreapi.com/products')
+        fetch('http://127.0.0.1:8000/getAllProducts/') //  fetch('https://fakestoreapi.com/products 'http://127.0.0.1:8000/getAllProducts/'')
         .then(res=>res.json())
         .then(json=>setProducts(json));
         // eslint-disable-next-line react-hooks/exhaustive-deps

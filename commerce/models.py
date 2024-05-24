@@ -24,9 +24,9 @@ class Products(models.Model):
     description = models.CharField(max_length=500)
     price = models.DecimalField(max_digits=6, decimal_places=2, null=False)
     quantity = models.IntegerField()
-    sales = models.IntegerField(null=True, blank=True)
-    profits = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True)
-    losses = models.DecimalField(max_digits=20, decimal_places=2, null=True, blank=True)
+    sales = models.IntegerField(default=0, null=True, blank=True)
+    profits = models.DecimalField(max_digits=20, decimal_places=2, default=0)
+    losses = models.DecimalField(max_digits=20, decimal_places=2, default=0)
     rate = models.DecimalField(max_digits=2, decimal_places=1, null=True, blank=True)
     image = models.FileField(upload_to='python-commerce')
     

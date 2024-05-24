@@ -14,4 +14,4 @@ export const orderRequest = (serializeCartProducts) => axios.post('http://127.0.
 
 export const fillDatabaseRequest = (product) => axios.post('http://127.0.0.1:8000/fillDatabase/', product);
 
-export const updateProductRequest = (product, pfs, calculatePreviousStock) => axios.post('http://127.0.0.1:8000/updateProduct/', product, pfs, calculatePreviousStock);
+export const updateProductRequest = (product, pfs, newStock) => axios.post('http://127.0.0.1:8000/updateProduct/', {product, pfs, newStock});

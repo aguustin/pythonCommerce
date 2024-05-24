@@ -147,8 +147,6 @@ class CreateProduct(CreateView):
         image_file = request.FILES.get('image')
         stock = Decimal(request.POST.get('quantity').replace(',','.'))
         profits = Decimal(request.POST.get('profits').replace(',','.'))
-        
-        print('profits ', profits, " ", "stock: ", stock)
         losses = (stock * profits)
 
         data = {
@@ -171,24 +169,22 @@ class CreateProduct(CreateView):
 class updateProduct(CreateView):  
     def post(self, request, *args, **kwargs):
         data = json.loads(request.body)
+        get_product_data = data.get('product')
         print("update form: ", data)
-        print("the pfs: ", request.POST.get('pfs')) #traer esto para meterlo en profits
-        print("previous calculate", request.POST.get('calculatePreviousStock')) #trae esto para restarselo al stock y la diferencia sumarsela a lo que ya esta en losses
-        category = data[0].get('category_code_id')
-        productId = data[0].get('id')
+        print("the pfs: ", data.get('pfs')) 
+        print("newStock", data.get('newStock'))
+        category = get_product_data.get('category_code_id')
+        category_instance = Categories.objects.get(id=category)
+        productId = get_product_data.get('id')
         product_instance = Products.objects.get(id=productId)
-        category_instance_name = Categories.objects.get(category=category)
-        print('category: ', category_instance_name)
-        if(category_instance_name):
-            print('entro en categoria por nombre')
-            product_instance.category_code = category_instance_name
-            product_instance.productName = data[0].get('productName')
-            product_instance.description = data[0].get('description')
-            product_instance.price = data[0].get('price')
-            product_instance.quantity = data[0].get('quantity')
-            
-            product_instance.save(update_fields=['category_code', 'productName', 'description', 'price', 'quantity'])
-            return HttpResponse(200)
+        product_instance.category_code = category_instance
+        product_instance.productName = get_product_data.get('productName')
+        product_instance.description = get_product_data.get('description')
+        product_instance.price = get_product_data.get('price')
+        product_instance.quantity = get_product_data.get('quantity')
+        product_instance.losses = product_instance.losses + data.get('pfs')
+        product_instance.save(update_fields=['category_code', 'productName', 'description', 'price', 'quantity', 'losses'])
+        return HttpResponse(200)
         
 
 class UpdateCartInfo(CreateView): 
@@ -223,22 +219,21 @@ class UpdateCartInfo(CreateView):
             buy = Buy_details.objects.create(user_code=user_instance, product_code=prod_instance, sub_total=getPrice, buy_date=timezone.now())
             buy.save()
             prod_instance.quantity = actualQuantity 
-            prod_instance.sales = getSales 
+            prod_instance.sales = prod_instance.sales + getSales 
             prod_instance.save(update_fields=['quantity', 'sales']) 
             return HttpResponse(200)
         else:
             if(findCategoryById):
-
                 catId = findCategoryById[0]['id']
                 category_instance = Categories.objects.get(id=catId)
-                saveProduct = Products.objects.create(category_code=category_instance, productName=getProductName, description=getDescription, price=getPrice, quantity=getQuantity, rate=getRate, image=getImage)
+                saveProduct = Products.objects.create(category_code=category_instance, productName=getProductName, description=getDescription, price=getPrice, quantity=getQuantity, sales=getSales, rate=getRate, image=getImage)
                 saveProduct.save()
                 return HttpResponse(200)
             else: 
-                print('B')
+
                 saveCategory = Categories.objects.create(category=getCategoryName)
                 saveCategory.save()
-                saveProduct = Products.objects.create(category_code=saveCategory.id, productName=getProductName, description=getDescription, price=getPrice, quantity=getQuantity, rate=getRate, image=getImage)
+                saveProduct = Products.objects.create(category_code=saveCategory.id, productName=getProductName, description=getDescription, price=getPrice, quantity=getQuantity, sales=getSales, rate=getRate, image=getImage)
                 saveProduct.save()
        
     
@@ -261,19 +256,26 @@ class DeleteProduct(DeleteView): #funciona
         
 class DeleteProductOnCart(DeleteView): #funciona
     model = User
+    model = Products
+    model = Buy_details
     def delete(self, request, *args, **kwargs):
-        productId = request.POST.get('productId')
-        User.objects.filter(product_id=productId).delete()
+        productId = kwargs.get('productId')
+        print(productId)
+        #product_instance = Products.objects.get(id=productId)
+        #product_instance.sales = product_instance.sales - sales
+        #product_instance.save(update_fields=['sales'])
+        Buy_details.objects.filter(id=productId).delete()
+       
         return HttpResponse(200)
 
-class getAllBuys(ListView): #funciona
+class getAllBuys(ListView): 
     model = Buy_details
     def get(self, request, *args, **kwargs):
         data = Buy_details.objects.all().values()
         return JsonResponse(list(data), safe=False)
     
     
-class getUserCartById(ListView): #funciona
+class getUserCartById(ListView): 
     def get(self, request, *args, **kwargs):
         user_id = kwargs.get('user_id')
         data = Buy_details.objects.filter(user_code=user_id, buy_code=None)
@@ -286,7 +288,6 @@ class orderByUser(CreateView):
         total = 0
         userId = data[0]['user_code']['id']
         user_instance = User.objects.get(id=userId)
-
         for item in data:
             total += Decimal(item['sub_total'])
 
@@ -294,6 +295,9 @@ class orderByUser(CreateView):
 
         for item in data:
             product_id = item['product_code']['id']
+            product_instance = Products.objects.get(id=product_id)
+            product_instance.profits = product_instance.profits + Decimal(item['sub_total'])
+            product_instance.save(update_fields=['profits'])
 
             # Find the Buy_details with matching user, product, and no existing buy_code
             buy_details = Buy_details.objects.filter(
