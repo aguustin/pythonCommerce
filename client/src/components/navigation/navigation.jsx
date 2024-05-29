@@ -73,7 +73,7 @@ const Navigation = () => {
                             <input type="checkbox" className="openAdminNav" />
                             <div className='slide'>
                                 <li><img src={productRelease} alt=""></img><a href="/uploadProductForm">Upload Product</a></li>
-                                <li><img src={trend} alt=""></img><a href="/sales">Sales</a></li>
+                                <li><img src={trend} alt=""></img><a href="/statistics">Statistics</a></li>
                             </div>
                         </div>
                     </>

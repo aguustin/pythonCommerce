@@ -1,0 +1,108 @@
+*{
+    list-style: none;
+}
+
+.statistics{
+    margin-top: 80px;
+    display: flex;
+    overflow-y: scroll;
+}
+
+.statistics::-webkit-scrollbar{
+    width: 10px;
+}
+
+.statistics::-webkit-scrollbar-thumb{
+    background-color: #c2c2c2;
+}
+
+.side-nav{
+    height: 89.6vh;
+    width: 300px;
+    background: rgb(3,0,131);
+    background: linear-gradient(90deg, rgba(3,0,131,1) 0%, rgba(22,71,191,1) 99%, rgba(8,22,92,1) 121%);
+}
+
+.side-nav button{
+    background-color: transparent;
+    border: none;
+    font-size: 18px;
+    font-weight: 600;
+    color: rgb(241, 241, 241);
+}
+
+.side-nav ul{
+    margin-top: 2rem;
+}
+
+.side-nav ul li{
+    height: 50px;
+}
+
+.side-nav button:hover{
+    transform: translateX(10px);
+    color: rgb(250, 138, 138);
+    transition: all .5s;
+}
+
+.statistics-container{
+    width: 100%;
+    padding: 1rem;
+    margin: 1rem;
+    background-color: rgb(240, 240, 240);
+    box-shadow: 1px 0px 5px 0px rgba(102,102,102,0.75);
+    -webkit-box-shadow: 1px 0px 5px 0px rgba(102,102,102,0.75);
+    -moz-box-shadow: 1px 0px 5px 0px rgba(102,102,102,0.75);
+    border-radius: 4px;
+}
+
+.general-statistics{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.totals{
+    padding: 1.5rem .9rem;
+    width: 262px;
+    margin: .5rem;
+    border-radius: 5px;
+    border:1px solid #c2c2c2;
+}
+
+.totals label{
+    font-weight: 600;
+}
+
+.totals h3{
+    margin-top: 1rem;
+}
+
+.totals > div{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.chart-recents-sales-container{
+    height: 59.4vh;
+    display: flex;
+    margin-top: .7rem;
+    margin-bottom: .7rem;
+}
+
+.chart, .recents-sales{
+    margin: .5rem;
+    border-radius: 5px;
+    border:1px solid #c2c2c2;
+}
+
+.chart{
+    padding: .8rem;
+    width: 60%;
+}
+
+.recents-sales{
+    margin-left: 1.5rem;
+    width: 400px;
+    overflow-y: auto;
+}

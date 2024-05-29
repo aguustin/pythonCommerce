@@ -11,6 +11,7 @@ import UserForm from './components/userForm/userForm';
 import { AuthContextProvider } from './context/authContext';
 import BuyForm from './components/buyForm/buyForm';
 import UploadProduct from './components/uploadProduct/uploadProduct';
+import Statistics from './components/statistics/statistics';
 
 function App() {
 
@@ -27,6 +28,7 @@ function App() {
             <Route path="/account/:change" element={<UserForm/>} />
             <Route path="/buyForm" element={<BuyForm/>}/>
             <Route path="/uploadProductForm" element={<UploadProduct/>}/>
+            <Route path="/statistics" element={<Statistics/>}/>
           </Routes>
       </ProductsContextProvider>
       </AuthContextProvider>

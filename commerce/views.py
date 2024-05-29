@@ -268,12 +268,18 @@ class DeleteProductOnCart(DeleteView): #funciona
        
         return HttpResponse(200)
 
-class getAllBuys(ListView): 
+class getAllBuys_Details(ListView): 
     model = Buy_details
     def get(self, request, *args, **kwargs):
         data = Buy_details.objects.all().values()
         return JsonResponse(list(data), safe=False)
     
+class getAllBuys(ListView):
+    model = Buy
+
+    def get(self, request, *args, **kwargs):
+        data = Buy.objects.all().order_by().values()
+        return JsonResponse(list(data), safe=False)
     
 class getUserCartById(ListView): 
     def get(self, request, *args, **kwargs):
@@ -285,19 +291,26 @@ class getUserCartById(ListView):
 class orderByUser(CreateView):
     def post(self, request, *args, **kwargs):
         data = json.loads(request.body)
+        total_profits = 0
         total = 0
         userId = data[0]['user_code']['id']
         user_instance = User.objects.get(id=userId)
         for item in data:
-            total += Decimal(item['sub_total'])
-
+            product_id = item['product_code']['id']
+            product_instance = Products.objects.get(id=product_id)
+            total += Decimal(item['sub_total']) * product_instance.sales
+        
+        print(total_profits)
         new_buy = Buy.objects.create(user_code=user_instance, total_price=total)
 
         for item in data:
             product_id = item['product_code']['id']
             product_instance = Products.objects.get(id=product_id)
-            product_instance.profits = product_instance.profits + Decimal(item['sub_total'])
-            product_instance.save(update_fields=['profits'])
+            product_instance.profits = product_instance.profits + (Decimal(item['sub_total']) * product_instance.sales)
+            product_instance.total_sales = product_instance.total_sales + product_instance.sales
+
+            product_instance.sales = 0
+            product_instance.save(update_fields=['profits', 'sales', 'total_sales'])
 
             # Find the Buy_details with matching user, product, and no existing buy_code
             buy_details = Buy_details.objects.filter(
@@ -311,3 +324,4 @@ class orderByUser(CreateView):
                 buy_detail.save()
 
         return HttpResponse('200')
+    
