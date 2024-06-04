@@ -97,12 +97,52 @@
 }
 
 .chart{
+    position: relative;
+    overflow-y: scroll;
     padding: .8rem;
     width: 60%;
+    background-color: rgb(236, 236, 236);
+    transition: all 0.5s ease;
 }
 
 .recents-sales{
     margin-left: 1.5rem;
     width: 400px;
     overflow-y: auto;
+}
+
+#see-details{
+    position: absolute;
+    right: 1rem;
+    bottom: 1rem;
+    padding: .5rem .8rem;
+    border: none;
+    border-radius: 3px;
+    background-color: rgb(87, 87, 255);
+    color: white;
+    font-weight: 600;
+    box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.75);
+    -webkit-box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.75);
+}
+
+#see-details:hover{
+    cursor: pointer;
+    transform: translateY(-5px);
+    transition: transform .5s;
+}
+
+.stat-detail{
+    height: 300px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.stat{
+    min-width: 40vw;
+}
+
+.stat form{
+    margin-top: 1rem;
+    margin-bottom: 1rem;
 }
