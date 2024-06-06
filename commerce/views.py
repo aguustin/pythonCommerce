@@ -274,6 +274,16 @@ class getAllBuys_Details(ListView):
         data = Buy_details.objects.all().values()
         return JsonResponse(list(data), safe=False)
     
+
+class Get_buy_details_by_id(ListView):
+    model = Buy_details
+    def get(self, request, *args, **kwargs):
+        get_product_id = kwargs['productId']
+        buy_details_instance = Buy_details.objects.filter(product_code=get_product_id)
+        serializer = Buy_detailsSerializer(buy_details_instance, many=True)
+        print(get_product_id)
+        return JsonResponse(serializer.data, safe=False)
+    
 class getAllBuys(ListView):
     model = Buy
 

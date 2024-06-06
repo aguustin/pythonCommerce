@@ -8,6 +8,7 @@ import stocksImg from '../../assets/stock.png';
 import salesImg from '../../assets/sale-tag.png';
 import ProductsContext from '../../context/productsContext';
 import { useContext, useEffect, useState } from 'react';
+import { getBuyByIdRequest } from '../api/productsRequest';
 
 const Statistics = () => {
     const {products, setProducts} = useContext(ProductsContext)
@@ -30,9 +31,9 @@ const Statistics = () => {
                 .then(res=>res.json())
                 .then(json=>setProducts(json));
                 // eslint-disable-next-line react-hooks/exhaustive-deps
-                fetch('http://127.0.0.1:8000/getBuys/')
+                /*fetch('http://127.0.0.1:8000/getBuys/')
                 .then(res=>res.json())
-                .then(json=>setBuys(json))
+                .then(json=>setBuys(json))*/
             // eslint-disable-next-line react-hooks/exhaustive-deps
             },[])
             
@@ -76,7 +77,8 @@ const Statistics = () => {
         setDateTo(e.target.value)
     }
 
-    const openStatistics = () => {
+    const openStatistics = async () => {
+        
         document.getElementById("charts").style.position = "fixed";
         document.getElementById("charts").style.top = "80px"
         document.getElementById("charts").style.bottom = "0"
@@ -88,29 +90,46 @@ const Statistics = () => {
         console.log('productos', products)
     }
 
-    const openProductStatistics = () => {
+    const openProductStatistics = async (productId) => {
+        const res = await getBuyByIdRequest(productId)
+        setBuys(res.data)
 
         if(document.getElementById("stat").style.height == "90vh"){
             document.getElementById("stat").style.width = "41.40vw"
             document.getElementById("stat").style.height = "38.90vh"
-        }else{
-            document.getElementById("stat").style.position = 
+        }else{ 
             document.getElementById("stat").style.width = "80vw"
             document.getElementById("stat").style.height = "90vh"
             document.getElementById("stat").style.transition = "all .5s"
         }
     }
 
+    console.log("details: ", buys)
+
     const staticsFromDates = (e) => {
         e.preventDefault()
-        const dates = {
-            dateStart: e.target.elements.dateStart.value,
-            dateEnd: e.target.elements.dateEnd.value
+        
+        const dateStart = e.target.elements.dateStart.value
+        const dateEnd = e.target.elements.dateEnd.value
+        let filteredBuys = null;
+
+        if (dateStart && dateEnd && dateStart !== dateEnd) {
+            // Filter buys between dateStart and dateEnd inclusive
+            filteredBuys = buys.filter(b => b.buy_date >= dateStart && b.buy_date <= dateEnd);
+        } else if (dateStart) {
+            // Filter buys on dateStart only
+            filteredBuys = buys.filter(b => b.buy_date >= dateStart);
+        } else if (dateEnd){
+            filteredBuys = buys.filter(b => b.buy_date <= dateEnd);
+        } else {
+            // If no dates are provided, return all buys or handle as needed
+            filteredBuys = buys;
         }
+    
+        console.log('date start: ', dateStart, 'date end: ', dateEnd);
+        console.log("filtered buys: ", filteredBuys);
 
-        console.log(dates);
     }
-
     return(
         <>
         <div className='statistics'>
@@ -173,7 +192,7 @@ const Statistics = () => {
                                     <button className='stats-button' type='submit'>Stats</button>
                                 </form>
                                 <label>{p.productName}</label>
-                                <Bar key={p.id} id="abc" onClick={() => openProductStatistics()}          
+                                <Bar key={p.id} id="abc" onClick={() => openProductStatistics(p.id)}          
                                         data={{
                                             labels: ['January'],
                                             datasets: [

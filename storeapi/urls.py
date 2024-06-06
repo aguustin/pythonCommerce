@@ -34,6 +34,7 @@ urlpatterns = [
     path('getAllUsers/', views.GetAllUsers.as_view()),
     path('getAllBuys/', views.getAllBuys_Details.as_view()),
     path('getBuys/', views.getAllBuys.as_view()),
+    path('getBuyDetailsById/<int:productId>/', views.Get_buy_details_by_id.as_view(), name="getBuyDetailsById"),
     path('getUserCartById/<int:user_id>/', csrf_exempt(views.getUserCartById.as_view()), name="getUserCartById"),
     path('getUserInfo/', csrf_exempt(views.GetUserInfo.as_view()), name="getUserInfo"),
     path('uploadProduct/', csrf_exempt(views.CreateProduct.as_view()), name="uploadProduct"),
