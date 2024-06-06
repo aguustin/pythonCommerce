@@ -25,6 +25,7 @@ const Statistics = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [dateFrom, setDateFrom] = useState('');
     const [dateTo, setDateTo] = useState('');
+    let filteredBuys = null;
     
             useEffect(() => {
                 fetch('http://127.0.0.1:8000/getAllProducts/') //  fetch('https://fakestoreapi.com/products 'http://127.0.0.1:8000/getAllProducts/'')
@@ -111,7 +112,6 @@ const Statistics = () => {
         
         const dateStart = e.target.elements.dateStart.value
         const dateEnd = e.target.elements.dateEnd.value
-        let filteredBuys = null;
 
         if (dateStart && dateEnd && dateStart !== dateEnd) {
             // Filter buys between dateStart and dateEnd inclusive
