@@ -17,7 +17,7 @@ class FillDatabase(CreateView):
 
     def post(self, request, *args, **kwargs):
         data = json.loads(request.body)
-        print('datsss: ', data)
+
         for product in data:
             category = product.get('category')
             productName = product.get('title')
@@ -43,7 +43,7 @@ class FillDatabase(CreateView):
 
             product_data.save()
     
-        return HttpResponse('200')
+        return HttpResponse(200)
 
 
 class CreateUser(CreateView): #funciona
@@ -76,8 +76,10 @@ class CreateUser(CreateView): #funciona
             usersData = User.objects.create(location_code=Locations, postal_code=PostalCodes, userType=2, mail=mail, username=username, password=password)
             usersData.save()
 
-            return HttpResponse('200')
-            
+            return HttpResponse(200)
+        else:    
+            return HttpResponse(200)
+        
 
 class GetAllProducts(ListView): #funciona
     model = Products
@@ -333,5 +335,5 @@ class orderByUser(CreateView):
                 buy_detail.buy_code = new_buy
                 buy_detail.save()
 
-        return HttpResponse('200')
+        return HttpResponse(200)
     

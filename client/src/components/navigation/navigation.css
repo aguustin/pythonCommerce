@@ -6,6 +6,10 @@
     left: 2rem;
 }
 
+.bagImg-resp{
+    display: none;
+}
+
 .navigation{
     height: 80px;
     width: 100%;
@@ -75,6 +79,12 @@
     color: black;
 }
 
+.slide a, .slide button{
+    background-color: transparent;
+    border: none;
+    margin-left: 15px;
+}
+
 .openAdminNav{
     display: none;
     visibility: hidden;
@@ -85,7 +95,6 @@
     width: 300px;
     right: 15rem;
 }
-
 
 .cartShop{
     position: absolute;
@@ -126,4 +135,32 @@
     right: 2rem;
     background-color: transparent;
     border: none;
+}
+
+
+@media screen and (max-width:1460px) {
+    .bootstrapInput{
+        position: absolute;
+        width: 300px;
+        right: 0rem;
+        top: 6rem;
+    }
+}
+
+@media screen and (max-width:990px) {
+    .bagImg{
+        display: none;
+    }
+    
+    .bagImg-resp{
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        left: 2rem;
+    }
+}
+
+@media screen and (max-width:900px) {
+
 }

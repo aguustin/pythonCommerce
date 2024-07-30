@@ -32,8 +32,6 @@ const Details = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    console.log('details: ', details)
-
     const puntuation = (e, productId, rate) => {
         e.preventDefault();
         console.log(productId, " ", rate);
@@ -109,7 +107,7 @@ const Details = () => {
                             }
                             </div>
                             <div>
-                                <div>
+                                <div className='sum-rest'>
                                     <button type="button" className="btn btn-success" onClick={(e) => rest(e)}>-</button>
                                     <label>{sales}</label>
                                     <button type="button" className="btn btn-success" onClick={(e) => sum(e)}>+</button>

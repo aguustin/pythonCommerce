@@ -15,13 +15,16 @@ const Home = () => {
         .then(res=>res.json())
         .then(json=>setProducts(json));
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[])
+    }, [])
+
     console.log(products);
 
-    useEffect(() => {
-        fillDatabaseRequest(products)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    /*useEffect(() => {
+        if(products.length > 0){
+            fillDatabaseRequest(products)
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [products])*/
     
     return(
         <>

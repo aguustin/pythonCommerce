@@ -108,7 +108,10 @@ const UploadProduct = () => {
                             <label>Price for stock:</label>
                             <input type='number' name="profits"></input>
                         </div>
-                        <button type="submit">Upload</button>
+                        <div className='d-flex items-center justify-content-between'>
+                            <button type="submit">Upload</button>
+                            <button onClick={() => setCreateProductForm(!createProductForm)}>Cancel</button>
+                        </div>
                     </form>
             </>
             }

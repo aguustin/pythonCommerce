@@ -38,7 +38,7 @@ const Products = () => {
                                 const cloudinaryImg = `https://res.cloudinary.com/drmcrdf4r/image/upload/v1715038215/${p.image}`
                                 return(
                                 <Link key={p.id} to={`/details/${p.id}`} className='goToDetails'>
-                                 <div className="card">
+                                 <div className="card mt-3">
                                  <img src={cloudinaryImg} className="card-img-top" alt=""
                                     onError={(e) => {
                                         e.target.onerror = null; // To avoid infinite loop

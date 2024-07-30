@@ -5,6 +5,7 @@ import menu from '../../assets/menu.png';
 import productRelease from '../../assets/product-release.png';
 import trend from '../../assets/trend.png';
 import logoutImg from '../../assets/log-out.png';
+import logoutImgB from  '../../assets/logout.png';
 import cartShops from '../../assets/shopping-trolley.png';
 import { useContext, useEffect, useState } from 'react';
 import Cart from '../cart/cart';
@@ -17,6 +18,7 @@ const Navigation = () => {
     const {session, setSession} = useContext(AuthContext);
     const {/*cartProducts*/ setCartProducts} = useContext(ProductsContext);
     const [openCart, setOpenCart] = useState();
+    const [openSideNav, setOpenSideNav] = useState(false) 
 
     const logout = () => {
         localStorage.removeItem('user');
@@ -46,6 +48,9 @@ const Navigation = () => {
                     <img src={bag} alt=""></img>
                     <h3>Tienda Online</h3>
                 </div>
+                <div  className='bagImg-resp'>
+                    <img src={bag} alt=""></img>
+                </div>
                 <div className='navigation-ul'>
                     <Link to="/" className='navHome'>Home</Link>
                     <div className="btn-group">
@@ -68,14 +73,17 @@ const Navigation = () => {
                     ?
                     session.userType == 1 ?
                     <>
-                        <img className='openMenu' src={menu} alt=""></img>
+                        <img className='openMenu' src={menu} alt="" onClick={() => setOpenSideNav(!openSideNav)}></img>
+                    {openSideNav &&
                         <div className='menu'>
                             <input type="checkbox" className="openAdminNav" />
                             <div className='slide'>
                                 <li><img src={productRelease} alt=""></img><a href="/uploadProductForm">Upload Product</a></li>
                                 <li><img src={trend} alt=""></img><a href="/statistics">Statistics</a></li>
+                                <li><img src={logoutImgB} alt=""></img><button onClick={() => logout()}>Logout</button></li>
                             </div>
                         </div>
+                    }
                     </>
                     :
                     <>

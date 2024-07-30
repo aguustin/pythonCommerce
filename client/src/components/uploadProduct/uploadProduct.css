@@ -18,7 +18,7 @@
 }
 
 .addProductForm{
-    position: absolute;
+    position: fixed;
     top: 20%;
     left: 50%;
     transform: translateX(-50%);
@@ -102,6 +102,11 @@
 
 .product-info img:hover{
     cursor: pointer;
+}
+
+.product-info button{
+    background-color: transparent;
+    border: none;
 }
 
 .cat-pri-rate{
