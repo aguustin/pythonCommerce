@@ -161,11 +161,12 @@
     }
 }
 
+
 @media screen and (max-width:825px) {
 
     .details{
         width: 100%;
-        margin-top: 9rem;
+        margin-top: 3rem;
         margin-bottom: 4rem;
         padding: 0rem 3rem;
     }

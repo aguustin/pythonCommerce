@@ -10,7 +10,7 @@ const Products = () => {
     //const [productsByCat, setProductsByCat] = useState([]);
     const {category} = useParams();
     setCategoryCont(category);
-    
+   
     useEffect(() => {
         fetch(`http://127.0.0.1:8000/getProductsByCategory/${category}`)// fetch(`https://fakestoreapi.com/products/category/${category}`)
         .then(res=>res.json())

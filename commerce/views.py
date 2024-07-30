@@ -92,11 +92,16 @@ class GetProductsByCategory(ListView):
     model = Products
     def get(self, request, *args, **kwargs):
         categoryName = kwargs.get('category')
-        getCategoryName = Categories.objects.filter(category=categoryName).values()
-        first_id = getCategoryName.first().get('id')
-        print("cat: ", first_id)
-        data = Products.objects.filter(category_code=first_id).values()
-        return JsonResponse(list(data), safe=False)
+        if categoryName == 'ourProducts':
+            data = Products.objects.all().values()
+            return JsonResponse(list(data), safe=False)
+        else:
+            getCategoryName = Categories.objects.filter(category=categoryName).values()
+            first_id = getCategoryName.first().get('id')
+            data = Products.objects.filter(category_code=first_id).values()
+            print("cat: ", first_id)
+        
+            return JsonResponse(list(data), safe=False)
        
 class GetProductById(ListView):
     model = Products

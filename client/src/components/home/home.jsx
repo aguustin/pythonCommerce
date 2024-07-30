@@ -31,13 +31,13 @@ const Home = () => {
             <div className="home">
                   <>
                     <div className='principal-img'>
-                        <Link to="/products"><img src={prueba} alt=""></img></Link>
+                        <Link to="/products/ourProducts"><img src={prueba} alt=""></img></Link>
                     </div>
                     <div className='secondary-img'>
-                        <Link to="/products/men's clothing"><img src={prueba} alt=""></img></Link>
-                        <Link to="/products/jewerely"><img src={prueba} alt=""></img></Link>
-                        <Link to="/products/electronics"><img src={prueba} alt=""></img></Link>
-                        <Link to="/products/women's clothing"><img src={prueba} alt=""></img></Link>
+                        <Link className="select-category" to="/products/men's clothing"><img src={prueba} alt=""></img></Link>
+                        <Link className="select-category" to="/products/jewerely"><img src={prueba} alt=""></img></Link>
+                        <Link className="select-category" to="/products/electronics"><img src={prueba} alt=""></img></Link>
+                        <Link className="select-category" to="/products/women's clothing"><img src={prueba} alt=""></img></Link>
                     </div>
                  </>
             </div>

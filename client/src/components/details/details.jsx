@@ -9,7 +9,7 @@ import AuthContext from '../../context/authContext';
 
 const Details = () => {
     const {session} = useContext(AuthContext)
-    const {/*categoryCont,*/ productsByCat, setCartProducts, cartProducts, addToCartContext} = useContext(ProductsContext)
+    const {/*categoryCont,*/ setCategoryCont, productsByCat, setProductsByCat, setCartProducts, cartProducts, addToCartContext} = useContext(ProductsContext)
 
     const [details, setDetails] = useState([]);
     const [openPuntuation, setOpenPuntuation] = useState(false);
@@ -29,6 +29,16 @@ const Details = () => {
 
         localStorage.setItem('cartInfo', JSON.stringify(cartProducts));
         setCartProducts(JSON.parse(localStorage.getItem('cartInfo')));
+       /* localStorage.setItem('user', JSON.stringify(res.data[0]));
+        await setSession(JSON.parse(localStorage.getItem('user')));*/
+
+        if(productsByCat.length > 0){
+            localStorage.setItem('actualCat', JSON.stringify(productsByCat));
+            setProductsByCat(JSON.parse(localStorage.getItem('actualCat')));
+        }else{
+            setProductsByCat(JSON.parse(localStorage.getItem('actualCat')));
+        }
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
@@ -128,7 +138,7 @@ const Details = () => {
                     productsByCat.map((p) => {
                         const cloudinaryImg = `https://res.cloudinary.com/drmcrdf4r/image/upload/v1715038215/${p.image}`
                         return(
-                            <Link key={p.id} to={`/details/${p.id}`} className='goToDetails'>
+                            <Link key={p.id} to={`/details/${p.id}`} onClick={() => {window.location.href=`/details/${p.id}`}} className='goToDetails'>
                                 <div className="card">
                                 <img src={cloudinaryImg} className="card-img-top" alt=""
                                     onError={(e) => {

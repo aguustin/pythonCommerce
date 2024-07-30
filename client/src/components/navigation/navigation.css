@@ -137,6 +137,33 @@
     border: none;
 }
 
+.sidebar{
+    display: none;
+}
+
+.menu-resp{
+    margin-top: 1rem;
+}
+
+.navlink-resp-container{
+    margin: 2rem 2rem;
+}
+
+.navlink-resp-container li{
+    margin-top:2rem;
+}
+
+.navlink-resp{
+    text-decoration: none;
+    color:black;
+    font-size: 30px;
+}
+
+.sidebar-footer{
+    height: 50px;
+    background-color: #FFB76B;
+}
+
 
 @media screen and (max-width:1460px) {
     .bootstrapInput{
@@ -159,8 +186,19 @@
         justify-content: space-between;
         left: 2rem;
     }
+
 }
 
 @media screen and (max-width:900px) {
 
-}
+    .navigation{
+        display: none;
+    }
+    .sidebar{
+        width: 100vw;
+        display: block;
+        box-shadow: 0px 2px 5px 0px rgba(163,163,163,0.75);
+        -webkit-box-shadow: 0px 2px 5px 0px rgba(163,163,163,0.75);
+        -moz-box-shadow: 0px 2px 5px 0px rgba(163,163,163,0.75);
+    }
+}   
