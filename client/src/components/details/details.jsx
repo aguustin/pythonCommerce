@@ -105,6 +105,7 @@ const Details = () => {
                             </div>
                             <div>
                             {openPuntuation &&
+                                session &&
                                 <div className="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
                                     <div className="btn-group btn-rating me-2" role="group" aria-label="First group">
                                         <button type="button" className="btn btn-outline-warning" onClick={() => puntuation(d.id, 1)}>1</button>
@@ -116,6 +117,7 @@ const Details = () => {
                                 </div>
                             }
                             </div>
+                            {session &&
                             <div>
                                 <div className='sum-rest'>
                                     <button type="button" className="btn btn-success" onClick={(e) => rest(e)}>-</button>
@@ -126,6 +128,7 @@ const Details = () => {
                                     <button className='addCartButton text-bg-warning' onClick={(e) => addToCart(e, d.id, d.category_code.category, d.description, d.image, d.price, d.rate, d.quantity, d.productName, sales)}><p>Add </p><img src={addToCartImg} alt=""></img></button>
                                 </div>
                             </div>
+                            }
                         </div>
                     </div>
                 </div>
