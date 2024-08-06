@@ -1,3 +1,53 @@
+.buyForm-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-x: hidden;
+}
+
 .buyForm{
     margin-top: 10rem;
+    text-align: center;
+}
+
+.buyForm button{
+    border: none;
+    font-size: 20px;
+    color: white;
+    background-color: orange;
+    padding: .5rem 2rem;
+    margin: 30px auto;
+}
+
+.fill-data{
+    width: 400px;
+    margin: auto;
+}
+
+.buyForm-group{
+    margin-top: 15px;
+}
+
+.product-to-buy-container{
+    display: flex;
+    flex-wrap: wrap;
+    width: 100vw;
+    margin-top: 5rem;
+}
+
+.product-to-buy{
+    margin: auto;
+    padding: 1rem;
+    width: 300px;
+    text-align: center;
+}
+
+.product-to-buy img{
+    width: 150px;
+    object-fit:cover;
+}
+
+.product-to-buy h3{
+    font-size: 18px;
+    margin-top: 1rem;
 }

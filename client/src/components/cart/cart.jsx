@@ -1,6 +1,6 @@
 import './cart.css';
 import trash from '../../assets/recycle-bin.png';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import ProductsContext from '../../context/productsContext';
 
 const Cart = () => {
@@ -21,6 +21,16 @@ const Cart = () => {
         const newCartProducts = cartProducts.filter((c) => c.id!== productId);
         setCartProducts(newCartProducts);
     }
+
+    const ProductDetails = ({ description, maxLength }) => {
+        const truncatedDescription =
+          description.length > maxLength
+            ? description.substring(0, maxLength) + '...'
+            : description;
+      
+        return <p id="product-details">{truncatedDescription}</p>;
+      };
+
     console.log(cartProducts)
     return(
         <>
@@ -37,11 +47,11 @@ const Cart = () => {
                             <h2 className='text-success'>X{c.product_code.sales}</h2>
                             <h2 className='text-success'>${c.product_code.price}</h2>
                         </div>
-                        <p>{c.product_code.description}</p>
+                        <ProductDetails description={c.product_code.description} maxLength={50} />
                     </div>
                 </div>)}
                 <div>
-                    <button><a href='/buyForm'>Buy</a></button>
+                    <button className='buy-button'><a href='/buyForm'>Buy</a></button>
                 </div>
             </div>
         </>

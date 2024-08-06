@@ -12,6 +12,7 @@ import { getBuyByIdRequest } from '../api/productsRequest';
 
 const Statistics = () => {
     const {products, setProducts} = useContext(ProductsContext)
+    const [filterByStat, setFilterByStat] = useState(0)
     const [profitsStats, setProfitsStats] = useState()
     const [totalProfits, settotalProfits] = useState(0)
     const [lossesStats, setLossesStats] = useState()
@@ -84,7 +85,7 @@ const Statistics = () => {
         document.getElementById("charts").style.top = "80px"
         document.getElementById("charts").style.bottom = "0"
         document.getElementById("charts").style.right = "0"
-        document.getElementById("charts").style.left = "16.5vw"
+        document.getElementById("charts").style.left = "16rem"
         document.getElementById("charts").style.width = "100%"
         document.getElementById("charts").style.overflowY = "scroll"
         setSeeDetails(true)
@@ -92,21 +93,20 @@ const Statistics = () => {
     }
 
     const openProductStatistics = async (productId) => {
+        console.log(productId)
         const res = await getBuyByIdRequest(productId)
         setBuys(res.data)
-
-        if(document.getElementById("stat").style.height == "90vh"){
-            document.getElementById("stat").style.width = "41.40vw"
-            document.getElementById("stat").style.height = "38.90vh"
+        if(document.getElementById(productId).style.height == "90vh"){
+            document.getElementById(productId).style.width = "41.40vw"
+            document.getElementById(productId).style.height = "38.90vh"
         }else{ 
-            document.getElementById("stat").style.width = "80vw"
-            document.getElementById("stat").style.height = "90vh"
-            document.getElementById("stat").style.transition = "all .5s"
+            document.getElementById(productId).style.width = "80vw"
+            document.getElementById(productId).style.height = "90vh"
+            document.getElementById(productId).style.transition = "all .5s"
         }
     }
-
-    console.log("details: ", buys)
-
+    
+    console.log("buys: " ,buys)
     const staticsFromDates = (e) => {
         e.preventDefault()
         
@@ -125,11 +125,13 @@ const Statistics = () => {
             // If no dates are provided, return all buys or handle as needed
             filteredBuys = buys;
         }
-    
+
         console.log('date start: ', dateStart, 'date end: ', dateEnd);
         console.log("filtered buys: ", filteredBuys);
 
     }
+
+    console.log(filteredProducts)
     return(
         <>
         <div className='statistics'>
@@ -138,10 +140,11 @@ const Statistics = () => {
                 <input type="text" name="search" value={searchTerm} onChange={handleSearchChange}></input>
             </form>
                 <ul>
-                    <li><button>Profits</button></li>
-                    <li><button>Losses</button></li>
-                    <li><button>Stock</button></li>
-                    <li><button>Sales History</button></li>
+                    <li><button onClick={() => setFilterByStat(0)}>All</button></li>
+                    <li><button onClick={() => setFilterByStat(1)}>Profits</button></li>
+                    <li><button onClick={() => setFilterByStat(2)}>Losses</button></li>
+                    <li><button onClick={() => setFilterByStat(3)}>Stock</button></li>
+                    <li><button onClick={() => setFilterByStat(4)}>Sales History</button></li>
                 </ul>
             </nav>
             <div className="statistics-container">
@@ -158,7 +161,7 @@ const Statistics = () => {
                             <label>Total Losses</label>
                             <img src={lossesImg} alt=""></img>
                         </div>
-                        <h3>$ {totalLosses}</h3>
+                        <h3>${totalLosses}</h3>
                     </div>
                     <div className='totals'>
                         <div>
@@ -180,10 +183,12 @@ const Statistics = () => {
                        {seeDetails
                        ?     
                        <div className='stat-detail'>
-                       {filteredProducts.map((p) => {
+                       {
+                       filterByStat == 0 &&
+                       filteredProducts.map((p) => {
                             return(
                                 <>
-                                <div className='stat' id='stat'>
+                                <div className='stat' id={p.id}>
                                 <form onSubmit={(e) => staticsFromDates(e)}>
                                     <label htmlFor="start">From:</label>
                                     <input type="date" id="start" name="dateStart" value={dateFrom} min="2020-05-10" max="2024-07-00" onChange={onDateFrom} />
@@ -238,6 +243,170 @@ const Statistics = () => {
                                 </>
                             )
                         })}
+                        {
+                        filterByStat == 1 &&
+                        filteredProducts.map((p) => {
+                            return(
+                                <>
+                                <div className='stat' id={p.id}>
+                                <form onSubmit={(e) => staticsFromDates(e)}>
+                                    <label htmlFor="start">From:</label>
+                                    <input type="date" id="start" name="dateStart" value={dateFrom} min="2020-05-10" max="2024-07-00" onChange={onDateFrom} />
+                                    <label htmlFor="start">To:</label>
+                                    <input type="date" id="end" name="dateEnd" value={dateTo} min="2020-05-10" max="2024-07-00" onChange={onDateTo} />
+                                    <button className='stats-button' type='submit'>Stats</button>
+                                </form>
+                                <label>{p.productName}</label>
+                                <Bar key={p.id} id="abc" onClick={() => openProductStatistics(p.id)}          
+                                        data={{
+                                            labels: ['January'],
+                                            datasets: [
+                                                {
+                                                    label: "Profits",
+                                                    data: [p.profits],
+                                                    borderColor: '#36A2EB',
+                                                    backgroundColor: '#5afd68',
+                                                }
+                                            ],
+                                            options: {
+                                                     scales: {
+                                                        y: {
+                                                            min: 2,
+                                                            max: 1000000,
+                                                        }
+                                                    }
+                                            }  
+                                    
+                                        }}
+                                        
+                                />
+                                </div>
+                                </>
+                            )
+                        })}
+                            {
+                        filterByStat == 2 &&
+                        filteredProducts.map((p) => {
+                            return(
+                                <>
+                                <div className='stat' id={p.id}>
+                                <form onSubmit={(e) => staticsFromDates(e)}>
+                                    <label htmlFor="start">From:</label>
+                                    <input type="date" id="start" name="dateStart" value={dateFrom} min="2020-05-10" max="2024-07-00" onChange={onDateFrom} />
+                                    <label htmlFor="start">To:</label>
+                                    <input type="date" id="end" name="dateEnd" value={dateTo} min="2020-05-10" max="2024-07-00" onChange={onDateTo} />
+                                    <button className='stats-button' type='submit'>Stats</button>
+                                </form>
+                                <label>{p.productName}</label>
+                                <Bar key={p.id} id="abc" onClick={() => openProductStatistics(p.id)}          
+                                        data={{
+                                            labels: ['January'],
+                                            datasets: [
+                                                {
+                                                    label: "Losses",
+                                                    data: [p.losses],
+                                                    borderColor: '#36A2EB',
+                                                    backgroundColor: '#ff6464',
+                                                }
+                                            ],
+                                            options: {
+                                                     scales: {
+                                                        y: {
+                                                            min: 2,
+                                                            max: 1000000,
+                                                        }
+                                                    }
+                                            }  
+                                    
+                                        }}
+                                        
+                                />
+                                </div>
+                                </>
+                            )
+                        })}
+                            {
+                        filterByStat == 3 &&
+                        filteredProducts.map((p) => {
+                            return(
+                                <>
+                                <div className='stat' id={p.id}>
+                                <form onSubmit={(e) => staticsFromDates(e)}>
+                                    <label htmlFor="start">From:</label>
+                                    <input type="date" id="start" name="dateStart" value={dateFrom} min="2020-05-10" max="2024-07-00" onChange={onDateFrom} />
+                                    <label htmlFor="start">To:</label>
+                                    <input type="date" id="end" name="dateEnd" value={dateTo} min="2020-05-10" max="2024-07-00" onChange={onDateTo} />
+                                    <button className='stats-button' type='submit'>Stats</button>
+                                </form>
+                                <label>{p.productName}</label>
+                                <Bar key={p.id} id="abc" onClick={() => openProductStatistics(p.id)}          
+                                        data={{
+                                            labels: ['January'],
+                                            datasets: [
+                                                {
+                                                    label: "Stock",
+                                                    data: [p.quantity],
+                                                    borderColor: '#36A2EB',
+                                                    backgroundColor: '#649aff',
+                                                }
+                                            ],
+                                            options: {
+                                                     scales: {
+                                                        y: {
+                                                            min: 2,
+                                                            max: 1000000,
+                                                        }
+                                                    }
+                                            }  
+                                    
+                                        }}
+                                        
+                                />
+                                </div>
+                                </>
+                            )
+                        })}
+                            {
+                        filterByStat == 4 &&
+                        filteredProducts.map((p) => {
+                            return(
+                                <>
+                                <div className='stat' id={p.id}>
+                                <form onSubmit={(e) => staticsFromDates(e)}>
+                                    <label htmlFor="start">From:</label>
+                                    <input type="date" id="start" name="dateStart" value={dateFrom} min="2020-05-10" max="2024-07-00" onChange={onDateFrom} />
+                                    <label htmlFor="start">To:</label>
+                                    <input type="date" id="end" name="dateEnd" value={dateTo} min="2020-05-10" max="2024-07-00" onChange={onDateTo} />
+                                    <button className='stats-button' type='submit'>Stats</button>
+                                </form>
+                                <label>{p.productName}</label>
+                                <Bar key={p.id} id="abc" onClick={() => openProductStatistics(p.id)}          
+                                        data={{
+                                            labels: ['January'],
+                                            datasets: [
+                                                {
+                                                    label: "Sales",
+                                                    data: [p.sales],
+                                                    borderColor: '#36A2EB',
+                                                    backgroundColor: '#ff64b9',
+                                                }
+                                            ],
+                                            options: {
+                                                     scales: {
+                                                        y: {
+                                                            min: 2,
+                                                            max: 1000000,
+                                                        }
+                                                    }
+                                            }  
+                                    
+                                        }}
+                                        
+                                />
+                                </div>
+                                </>
+                            )
+                        })}
                          </div>
                        :
                        <Bar
@@ -246,25 +415,25 @@ const Statistics = () => {
                                 datasets: [
                                     {
                                         label: "Profits",
-                                        data: profitsStats,
+                                        data: [totalProfits],
                                         borderColor: '#36A2EB',
                                         backgroundColor: '#5afd68',
                                     },
                                     {
                                         label: "Losses",
-                                        data: lossesStats,
+                                        data: [totalLosses],
                                         borderColor: '#36A2EB',
                                         backgroundColor: '#ff6464',
                                     },
                                     {
                                         label: "Stock",
-                                        data: stockStats,
+                                        data: [totalStock],
                                         borderColor: '#36A2EB',
                                         backgroundColor: '#649aff',
                                     },
                                     {
                                         label: "Sales",
-                                        data: salesStats,
+                                        data: [totalSales],
                                         borderColor: '#36A2EB',
                                         backgroundColor: '#ff64b9',
                                     }

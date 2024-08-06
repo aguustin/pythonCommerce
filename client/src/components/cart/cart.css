@@ -2,8 +2,9 @@
     position: absolute;
     top:8.5vh;
     right: 0;
+    padding: .2rem .5rem;
     margin-right: 3rem;
-    height: 400px;
+    max-height: 500px;
     width: 400px;
     overflow-y: scroll;
     border-radius: 5px;
@@ -14,8 +15,32 @@
 }
 
 
+.cart::-webkit-scrollbar{
+    background-color: transparent;
+    width: 5px;
+}
+
+.cart::-webkit-scrollbar-thumb{
+    background-color: rgb(255, 226, 171);
+}
+
+
 .product-container{
     display: flex;
+    position: relative;
+}
+
+.product-container h2{
+    font-size: 17px;
+}
+
+.product-container h3{
+    font-size: 19px;
+}
+
+.product-container button{
+    background-color: transparent;
+    border: none;
 }
 
 .product-img-container{
@@ -28,6 +53,10 @@
     height: 64px;
     width: 64px;
     margin: auto;
+}
+
+.sales-and-price{
+    display: flex;
 }
 
 .trash{
@@ -46,4 +75,25 @@
     background: linear-gradient(to right, #FFB76B 0%, #FFC587 30%, #FFC75F 60%, #F189FF 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+}
+
+.product-details{
+    width: 10ch;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.buy-button{
+    width: 100%;
+    background-color: orange;
+    padding: .5rem;
+    border: none;
+    margin-bottom: .2rem;
+}
+
+.buy-button a{
+    text-decoration: none;
+    color:white;
+    font-size: 18px;
 }
